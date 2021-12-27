@@ -1,0 +1,81 @@
+﻿@model jsaosorio.Models.BaseHistorical
+
+@{
+    ViewBag.Title = "Delete";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Delete</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>BaseHistorical</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Domain)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Domain)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.old)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.old)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Current_Status)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Current_Status)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.type)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.type)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Super_Agency)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Super_Agency)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.datechange)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.datechange)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.new_data)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.new_data)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Delete" class="btn btn-default" /> |
+            @Html.ActionLink("Back to List", "Index")
+        </div>
+    }
+</div>

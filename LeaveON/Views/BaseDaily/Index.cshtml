@@ -1,0 +1,138 @@
+@model IEnumerable<jsaosorio.Models.BaseDaily>
+
+@{
+  ViewBag.Title = "DNC List";
+  Layout = "~/Views/Shared/_Layout.cshtml";
+
+}
+
+
+
+
+<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<link rel="stylesheet" href="/resources/demos/style.css">
+
+@*<script src="https://code.jquery.com/jquery-1.12.4.js"></script>*@
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+
+<form name="registration_form_Product" id='registration_form_Product' class="form-inline">
+  <center>
+    <div class="row">
+      @* <input type="hidden" name="SaleOrder.CustomerId" id="idnCustomer" value="" />*@
+
+      @*<input type="text" autocomplete="off" class="form-control" name="Customer.Name" id="customer" value="" placeholder="Search by customer" data-toggle="tooltip" data-placement="top" title="Search by customer">*@
+
+      @Html.Editor("startDate", new { htmlAttributes = new { @class = "form-control", @id = "datepickerStart", @placeholder = "Start date", @Value = ViewBag.StartDate } })
+
+      @Html.Editor("endDate", new { htmlAttributes = new { @class = "form-control", @id = "datepickerEnd", @placeholder = "End date", @Value = ViewBag.EndDate } })
+
+      <input type="button" value="Go" id="btnSearch" class="btn btn-info add-new" />
+
+      @*<input type="date" value="Search" id="btnSearch1" class="form-control " />*@
+
+    </div>
+  </center>
+</form>
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+@{Html.RenderPartial("_SelectedSOSR", Model); }
+
+
+<script type="text/javascript">
+
+
+    $(document).ready(function () {
+
+      $("#datepickerStart").datepicker({
+        showOtherMonths: true,
+        selectOtherMonths: true,
+        changeMonth: true,
+        changeYear: true,
+        numberOfMonths: 2,
+        //dateFormat: 'DD, MM, d, yy',
+        //showButtonPanel: true
+
+        showOn: "both"
+        //buttonImage: "images/calendar.gif",
+        //buttonImageOnly: true,
+        //buttonText: "Select date",
+
+        //minDate: -20,
+        //maxDate: "+1M +10D"
+      });
+
+      $("#datepickerEnd").datepicker({
+        showOtherMonths: true,
+        selectOtherMonths: true,
+        changeMonth: true,
+        changeYear: true,
+        numberOfMonths: 2,
+        //dateFormat: 'DD, MM, d, yy',
+        showOn: "both",
+        onSelect: function () {
+          //IsDatesCorrect();
+          //SubmitButtonStatus();
+        }
+      });
+        $('#btnSearch').click(function () {
+            SearchThis();
+        });
+
+        function SearchThis() {
+            //alert("yes");
+            var custId = "";
+
+            //var startDate = $('#startDate').val();
+            //var endDate = $('#endDate').val();
+
+            var startDate = $('#datepickerStart').datepicker({ dateFormat: 'dd-mm-yy' }).val();
+            var endDate = $('#datepickerEnd').datepicker({ dateFormat: 'dd-mm-yy' }).val();
+
+            //if (startDate.trim() == "" && Date.parse(startDate)) {
+            //    //Valid date
+            //} else {
+            //    alert("Start date is not valid");
+            //    return false;
+            //}
+
+            //if (Date.parse(startDate)) {
+            //    //Valid date
+            //} else {
+            //    alert("End date is not valid");
+            //    return false;
+            //}
+
+            //$('#loading-image').show();
+            $.ajax({
+                url: "@Url.Action("SearchData","SOSR")",
+                data: { 'custId': custId, 'startDate': startDate, 'endDate': endDate },
+                type: "GET",
+                cache: false,
+                success: function (data) {
+                    //alert(data);
+                    $("#NewData").html(data);
+
+                    //$("#hdnOrigComments").val($('#txtComments').val());
+                    //$('#lblCommentsNotification').text(savingStatus);
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    //$('#lblCommentsNotification').text("Error encountered while saving the comments.");
+                    alert('Data provided was not valid');
+                }
+            });
+        }
+
+        //$('#btnSearch').click(function () {
+
+
+        //});
+
+
+    });
+
+
+</script>

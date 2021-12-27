@@ -1,0 +1,68 @@
+@model CallCenter.Models.DNC
+
+@{
+  ViewBag.Title = "Create";
+  Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!-- left column -->
+<div class="col-md-6">
+  <!-- general form elements -->
+  <div class="card card-cyan">
+    <div class="card-header">
+      <h3 class="card-title">New DNC</h3>
+    </div>
+    <!-- /.card-header -->
+    <!-- form start -->
+
+
+
+
+    <div class="card-body">
+
+      @using (Html.BeginForm())
+      {
+        @Html.AntiForgeryToken()
+
+        <div class="form-horizontal">
+          
+          @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+          <div class="form-group">
+            @Html.LabelFor(model => model.SupplierId, "SupplierId", htmlAttributes: new { @class = "control-label" })
+            <div class="col-md-10">
+              @Html.DropDownList("SupplierId", null, htmlAttributes: new { @class = "form-control" })
+              @Html.ValidationMessageFor(model => model.SupplierId, "", new { @class = "text-danger" })
+            </div>
+          </div>
+
+          <div class="form-group">
+            @Html.LabelFor(model => model.Phone, htmlAttributes: new { @class = "control-label" })
+            <div class="col-md-10">
+              @Html.TextAreaFor(model => model.Phone, new { @class = "form-control", @rows = "20", @cols = "4", @placeholder= "Copy Paste Phone(s) here" })
+              @Html.ValidationMessageFor(model => model.Phone, "", new { @class = "text-danger" })
+            </div>
+          </div>
+
+          <div style="display:none;" class="form-group">
+            @Html.LabelFor(model => model.DateCreated, htmlAttributes: new { @class = "control-label" })
+            <div class="col-md-10">
+              @Html.EditorFor(model => model.DateCreated, new { htmlAttributes = new { @class = "form-control" } })
+              @Html.ValidationMessageFor(model => model.DateCreated, "", new { @class = "text-danger" })
+            </div>
+          </div>
+
+          <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+              <input type="submit" value="Add" class="btn btn-default" />
+            </div>
+          </div>
+        </div>
+      }
+    </div>
+
+  </div>
+  <div>
+    @Html.ActionLink("Back to List", "SearchDNC")
+  </div>
+
+</div>

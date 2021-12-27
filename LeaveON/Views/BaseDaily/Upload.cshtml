@@ -1,0 +1,117 @@
+@model jsaosorio.Models.BaseDaily
+
+@{
+  ViewBag.Title = "Create";
+  Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!-- left column -->
+<div class="col-md-6">
+  <!-- general form elements -->
+  <div class="card card-cyan">
+    <div class="card-header">
+      <h3 class="card-title">Upload Excel</h3>
+    </div>
+    <!-- /.card-header -->
+    <!-- form start -->
+
+
+
+
+    <div class="card-body">
+
+      @using (Ajax.BeginForm("Upload", "DNCs", new AjaxOptions() { HttpMethod = "POST" }, new { enctype = "multipart/form-data" }))
+      {
+        @Html.AntiForgeryToken()
+        @*<div class="form-group">
+          
+          <label class="control-label">Supplier</label>
+          <div class="col-md-10">
+            @Html.DropDownList("SupplierId", null, htmlAttributes: new { @class = "form-control" })
+            
+          </div>
+        </div>*@
+
+        <input type="file" name="files" id="fu1" />
+        <input id="uploadFile" type="submit" value="Upload File" />
+
+      }
+      <div class="progress">
+        <div class="progress-bar">0%</div>
+      </div>
+      <div id="status"></div>
+    </div>
+
+  </div>
+  <div>
+    @Html.ActionLink("Back to List", "SearchDNC")
+  </div>
+
+</div>
+<link href="~/Content/Custom/css/webToast.min.css" rel="stylesheet" />
+<script src="~/Content/Custom/js/webToast.min.js"></script>
+<style>
+  .progress {
+    position: relative;
+    width: 400px;
+    border: 1px solid #ddd;
+    padding: 1px;
+  }
+
+  .progress-bar {
+    width: 0px;
+    height: 20px;
+    background-color: #57be65;
+  }
+</style>
+
+<script>
+  (function () {
+
+    $('#uploadFile').click(function () {
+      var load = webToast.loading({
+        // REQUIRED
+        status: 'Uploading...',
+        message: 'It will take a minute or less',
+        // OPTIONAL
+        // Default: 'topright'
+        // or 'topleft', 'topcenter'
+        // 'bottomleft', 'bottomcenter', 'bottomright'
+        align: 'topcenter'/*,*/
+        // OPTIONAL
+        // Show a top progress bar
+        //line: true
+      });
+    });
+
+
+
+    var bar = $('.progress-bar');
+    var percent = $('.progress-bar');
+    var status = $('#status');
+
+    $('form').ajaxForm({
+      beforeSend: function () {
+        status.empty();
+        var percentValue = '0%';
+        bar.width(percentValue);
+        percent.html(percentValue);
+      },
+      uploadProgress: function (event, position, total, percentComplete) {
+        var percentValue = percentComplete + '%';
+        bar.width(percentValue);
+        percent.html(percentValue);
+      },
+      success: function (d) {
+        var percentValue = '100%';
+        bar.width(percentValue);
+        percent.html(percentValue);
+        $('#fu1').val('');
+        alert(d);
+      },
+      complete: function (xhr) {
+        status.html(xhr.responseText);
+      }
+    });
+  })();
+</script>

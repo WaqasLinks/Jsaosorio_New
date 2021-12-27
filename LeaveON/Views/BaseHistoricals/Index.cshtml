@@ -1,0 +1,927 @@
+@model IEnumerable<jsaosorio.Models.BaseHistorical>
+
+@{
+  ViewBag.Title = "Index";
+  Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<!-- DataTables -->
+<link rel="stylesheet" href="../../plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
+
+<!-- DataTables -->
+<script src="../../plugins/datatables/jquery.dataTables.min.js"></script>
+<script src="../../plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+
+
+
+<section class="content">
+  <div class="row">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-header">
+          <h3 class="card-title">
+            Base Daily
+
+          </h3>
+        </div>
+
+
+        <div class="card-body">
+          @*@Html.ActionLink("New DNC", "Create") |*@
+          <div class="row">
+            @*@Html.ActionLink(" New Sale ", "Create", "Leads") | <div id="exportExcel"><a href="#"> Export XLS</a></div>*@
+          </div>
+          @*<button id="exportExcel">Exprot XLS</button>*@
+          <div id="example1_wrapper" class="dataTables_wrapper dt-bootstrap4">
+            <div class="row">
+              <div class="col-sm-12 col-md-6">
+              </div>
+              <div class="col-sm-12 col-md-6"></div>
+            </div>
+            <div class="row">
+              <div class="col-sm-12">
+                @if (Model != null)
+                {
+                  @*<div class="col-sm-12">
+                    Toggle column:
+                    <a href="#" class="toggle-vis" data-column="	0	">	Domain	</a> -
+                    <a href="#" class="toggle-vis" data-column="	1	">	deal	</a> -
+                    <a href="#" class="toggle-vis" data-column="	2	">	agent	</a> -
+                    <a href="#" class="toggle-vis" data-column="	3	">	Cor	</a> -
+                    <a href="#" class="toggle-vis" data-column="	4	">	Neg	</a> -
+                    <a href="#" class="toggle-vis" data-column="	5	">	date	</a> -
+                    <a href="#" class="toggle-vis" data-column="	6	">	type	</a> -
+                    <a href="#" class="toggle-vis" data-column="	7	">	datechange	</a> -
+                    <a href="#" class="toggle-vis" data-column="	8	">	other1	</a> -
+                    <a href="#" class="toggle-vis" data-column="	9	">	other2	</a> -
+                    <a href="#" class="toggle-vis" data-column="	10	">	other3	</a> -
+                    <a href="#" class="toggle-vis" data-column="	11	">	Traffic_Share	</a> -
+                    <a href="#" class="toggle-vis" data-column="	12	">	Change	</a> -
+                    <a href="#" class="toggle-vis" data-column="	13	">	Rank	</a> -
+                    <a href="#" class="toggle-vis" data-column="	14	">	Monthly_Visits	</a>
+                  </div>*@
+                }
+                <table id="example1" class="table table-bordered table-hover dataTable dtr-inline display" style="width:100%" role="grid" aria-describedby="example1_info">
+                  <thead>
+                    <tr>
+                      <th>
+                        Domain
+                      </th>
+                      <th>
+                        deal
+                      </th>
+                      <th>
+                        agent
+                      </th>
+                      <th>
+                        Cor
+                      </th>
+                      <th>
+                        Neg
+                      </th>
+                      <th>
+                        date
+                      </th>
+                      <th>
+                        type
+                      </th>
+                      <th>
+                        datechange
+                      </th>
+                      <th>
+                        other1
+                      </th>
+                      <th>
+                        other2
+                      </th>
+                      <th>
+                        other3
+                      </th>
+                      <th>
+                        Traffic_Share
+                      </th>
+                      <th>
+                        Change
+                      </th>
+                      <th>
+                        Rank
+                      </th>
+                      <th>
+                        Monthly_Visits
+                      </th>
+                      <th>
+                        Unique_Vistiors
+                      </th>
+                      <th>
+                        Desktop_Share
+                      </th>
+                      <th>
+                        Mobile_Share
+                      </th>
+                      <th>
+                        Visit_Duration
+                      </th>
+                      <th>
+                        Pages_Visit_1
+                      </th>
+                      <th>
+                        Bounce_Rate
+                      </th>
+                      <th>
+                        AdSense
+                      </th>
+                      <th>
+                        Country
+                      </th>
+                      <th>
+                        Top_country
+                      </th>
+                      <th>
+                        Website_category
+                      </th>
+                      <th>
+                        Website_type
+                      </th>
+                      <th>
+                        MoM_traffic_change
+                      </th>
+                      <th>
+                        YoY_traffic_change
+                      </th>
+                      <th>
+                        MoM_Desktop_Traffic_Change
+                      </th>
+                      <th>
+                        YoY_desktop_traffic_change
+                      </th>
+                      <th>
+                        MoM_mobile_web_traffic_change
+                      </th>
+                      <th>
+                        YoY_mobile_web_traffic_change
+                      </th>
+                      <th>
+                        Unique_visits
+                      </th>
+                      <th>
+                        MoM_unique_visitors_change
+                      </th>
+                      <th>
+                        YoY_unique_visitors_change
+                      </th>
+                      <th>
+                        MoM_desktop_unique_visitors_change
+                      </th>
+                      <th>
+                        YoY_desktop_unique_visitors_change
+                      </th>
+                      <th>
+                        MoM_mobile_web_unique_visitors_change
+                      </th>
+                      <th>
+                        YoY_mobile_web_unique_visitors_change
+                      </th>
+                      <th>
+                        Desktop_traffic_share
+                      </th>
+                      <th>
+                        Mobile_traffic_share
+                      </th>
+                      <th>
+                        Pages_Visit_2
+                      </th>
+                      <th>
+                        Total_page_views
+                      </th>
+                      <th>
+                        MoM_total_page_views_change
+                      </th>
+                      <th>
+                        YoY_total_page_views_change
+                      </th>
+                      <th>
+                        MoM_Desktop_page_views_change
+                      </th>
+                      <th>
+                        YoY_desktop_page_views_change
+                      </th>
+                      <th>
+                        MoM_mobile_web_page_views_change
+                      </th>
+                      <th>
+                        YoY_mobile_web_page_views_change
+                      </th>
+                      <th>
+                        Monthly_desktop_traffic
+                      </th>
+                      <th>
+                        Desktop_unique_visitors
+                      </th>
+                      <th>
+                        Desktop_visit_duration
+                      </th>
+                      <th>
+                        Desktop_pages_per_visit
+                      </th>
+                      <th>
+                        Desktop_total_page_views
+                      </th>
+                      <th>
+                        Desktop_bounce_rate
+                      </th>
+                      <th>
+                        Mobile_web_monthly_traffic
+                      </th>
+                      <th>
+                        Mobile_web_unique_visitors
+                      </th>
+                      <th>
+                        Mobile_web_visit_duration
+                      </th>
+                      <th>
+                        Mobile_web_pages_visit
+                      </th>
+                      <th>
+                        Mobile_web_total_page_views
+                      </th>
+                      <th>
+                        Mobile_web_bounce_rate
+                      </th>
+                      <th>
+                        Direct_traffic_share
+                      </th>
+                      <th>
+                        Mail_share
+                      </th>
+                      <th>
+                        Referrals_share
+                      </th>
+                      <th>
+                        Social_share
+                      </th>
+                      <th>
+                        Organic_search_share
+                      </th>
+                      <th>
+                        Paid_search_share
+                      </th>
+                      <th>
+                        Display_ads_traffic_share
+                      </th>
+                      <th>
+                        Direct_traffic
+                      </th>
+                      <th>
+                        MoM_direct_traffic_change
+                      </th>
+                      <th>
+                        YoY_Direct_Traffic_Change
+                      </th>
+                      <th>
+                        Mail_visits
+                      </th>
+                      <th>
+                        MoM_mail_visits_change
+                      </th>
+                      <th>
+                        YoY_mail_visits_change
+                      </th>
+                      <th>
+                        Referral_visits
+                      </th>
+                      <th>
+                        MoM_referrals_visits_change
+                      </th>
+                      <th>
+                        YoY_referrals_visits_change
+                      </th>
+                      <th>
+                        Social_visits
+                      </th>
+                      <th>
+                        MoM_social_visits_change
+                      </th>
+                      <th>
+                        YoY_social_visits_change
+                      </th>
+                      <th>
+                        Organic_search_visits
+                      </th>
+                      <th>
+                        MoM_organic_search_change
+                      </th>
+                      <th>
+                        YoY_organic_search_change
+                      </th>
+                      <th>
+                        Paid_search_visits
+                      </th>
+                      <th>
+                        MoM_paid_search_change
+                      </th>
+                      <th>
+                        YoY_paid_search_change
+                      </th>
+                      <th>
+                        Display_ad_traffic
+                      </th>
+                      <th>
+                        MoM_display_traffic_change
+                      </th>
+                      <th>
+                        YoY_display_visits_change
+                      </th>
+                      <th>
+                        Company_name
+                      </th>
+                      <th>
+                        HQ_address
+                      </th>
+                      <th>
+                        HQ_city
+                      </th>
+                      <th>
+                        HQ_state
+                      </th>
+                      <th>
+                        HQ_country
+                      </th>
+                      <th>
+                        HQ_postal_code
+                      </th>
+                      <th>
+                        Employees
+                      </th>
+                      <th>
+                        Revenue
+                      </th>
+                      <th>
+                        Phone_number
+                      </th>
+                      <th>
+                        Email_address
+                      </th>
+                      <th>
+                        Male_distribution
+                      </th>
+                      <th>
+                        Female_distribution
+                      </th>
+                      <th>
+                        Ages_18_24
+                      </th>
+                      <th>
+                        Ages_25_34
+                      </th>
+                      <th>
+                        Ages_35_44
+                      </th>
+                      <th>
+                        Ages_45_54
+                      </th>
+                      <th>
+                        Ages_55_64
+                      </th>
+                      <th>
+                        Ages_65_Plus
+                      </th>
+                      <th>
+                        aux_visit_duration
+                      </th>
+                      <th>
+                        Aux_Neg
+                      </th>
+                      <th>
+                        Aux_Date_Day
+                      </th>
+                      <th>
+                        Aux_Date_Month
+                      </th>
+                      <th>
+                        Aux_Date_Year
+                      </th>
+                      <th>
+                        FileName
+                      </th>
+
+                    </tr>
+                  </thead>
+
+                  <tbody>
+                    @if (ViewBag.BaseDailyFilteredTable != null)
+                    {
+
+                      foreach (var item in ViewBag.BaseDailyFilteredTable)
+                      {
+                    <tr>
+                      <td>
+                        @item.Domain
+                        @*modelItem => item.Domain)*@
+                      </td>
+                      <td>
+                        @item.deal
+                      </td>
+                      <td>
+                        @item.agent
+                      </td>
+                      <td>
+                        @item.Cor
+                      </td>
+                      <td>
+                        @item.Neg
+                      </td>
+                      <td>
+                        @item.date
+                      </td>
+                      <td>
+                        @item.type
+                      </td>
+                      <td>
+                        @item.datechange
+                      </td>
+                      <td>
+                        @item.other1
+                      </td>
+                      <td>
+                        @item.other2
+                      </td>
+                      <td>
+                        @item.other3
+                      </td>
+                      <td>
+                        @item.Traffic_Share
+                      </td>
+                      <td>
+                        @item.Change
+                      </td>
+                      <td>
+                        @item.Rank
+                      </td>
+                      <td>
+                        @item.Monthly_Visits
+                      </td>
+                      <td>
+                        @item.Unique_Vistiors
+                      </td>
+                      <td>
+                        @item.Desktop_Share
+                      </td>
+                      <td>
+                        @item.Mobile_Share
+                      </td>
+                      <td>
+                        @item.Visit_Duration
+                      </td>
+                      <td>
+                        @item.Pages_Visit_1
+                      </td>
+                      <td>
+                        @item.Bounce_Rate
+                      </td>
+                      <td>
+                        @item.AdSense
+                      </td>
+                      <td>
+                        @item.Country
+                      </td>
+                      <td>
+                        @item.Top_country
+                      </td>
+                      <td>
+                        @item.Website_category
+                      </td>
+                      <td>
+                        @item.Website_type
+                      </td>
+                      <td>
+                        @item.MoM_traffic_change
+                      </td>
+                      <td>
+                        @item.YoY_traffic_change
+                      </td>
+                      <td>
+                        @item.MoM_Desktop_Traffic_Change
+                      </td>
+                      <td>
+                        @item.YoY_desktop_traffic_change
+                      </td>
+                      <td>
+                        @item.MoM_mobile_web_traffic_change
+                      </td>
+                      <td>
+                        @item.YoY_mobile_web_traffic_change
+                      </td>
+                      <td>
+                        @item.Unique_visits
+                      </td>
+                      <td>
+                        @item.MoM_unique_visitors_change
+                      </td>
+                      <td>
+                        @item.YoY_unique_visitors_change
+                      </td>
+                      <td>
+                        @item.MoM_desktop_unique_visitors_change
+                      </td>
+                      <td>
+                        @item.YoY_desktop_unique_visitors_change
+                      </td>
+                      <td>
+                        @item.MoM_mobile_web_unique_visitors_change
+                      </td>
+                      <td>
+                        @item.YoY_mobile_web_unique_visitors_change
+                      </td>
+                      <td>
+                        @item.Desktop_traffic_share
+                      </td>
+                      <td>
+                        @item.Mobile_traffic_share
+                      </td>
+                      <td>
+                        @item.Pages_Visit_2
+                      </td>
+                      <td>
+                        @item.Total_page_views
+                      </td>
+                      <td>
+                        @item.MoM_total_page_views_change
+                      </td>
+                      <td>
+                        @item.YoY_total_page_views_change
+                      </td>
+                      <td>
+                        @item.MoM_Desktop_page_views_change
+                      </td>
+                      <td>
+                        @item.YoY_desktop_page_views_change
+                      </td>
+                      <td>
+                        @item.MoM_mobile_web_page_views_change
+                      </td>
+                      <td>
+                        @item.YoY_mobile_web_page_views_change
+                      </td>
+                      <td>
+                        @item.Monthly_desktop_traffic
+                      </td>
+                      <td>
+                        @item.Desktop_unique_visitors
+                      </td>
+                      <td>
+                        @item.Desktop_visit_duration
+                      </td>
+                      <td>
+                        @item.Desktop_pages_per_visit
+                      </td>
+                      <td>
+                        @item.Desktop_total_page_views
+                      </td>
+                      <td>
+                        @item.Desktop_bounce_rate
+                      </td>
+                      <td>
+                        @item.Mobile_web_monthly_traffic
+                      </td>
+                      <td>
+                        @item.Mobile_web_unique_visitors
+                      </td>
+                      <td>
+                        @item.Mobile_web_visit_duration
+                      </td>
+                      <td>
+                        @item.Mobile_web_pages_visit
+                      </td>
+                      <td>
+                        @item.Mobile_web_total_page_views
+                      </td>
+                      <td>
+                        @item.Mobile_web_bounce_rate
+                      </td>
+                      <td>
+                        @item.Direct_traffic_share
+                      </td>
+                      <td>
+                        @item.Mail_share
+                      </td>
+                      <td>
+                        @item.Referrals_share
+                      </td>
+                      <td>
+                        @item.Social_share
+                      </td>
+                      <td>
+                        @item.Organic_search_share
+                      </td>
+                      <td>
+                        @item.Paid_search_share
+                      </td>
+                      <td>
+                        @item.Display_ads_traffic_share
+                      </td>
+                      <td>
+                        @item.Direct_traffic
+                      </td>
+                      <td>
+                        @item.MoM_direct_traffic_change
+                      </td>
+                      <td>
+                        @item.YoY_Direct_Traffic_Change
+                      </td>
+                      <td>
+                        @item.Mail_visits
+                      </td>
+                      <td>
+                        @item.MoM_mail_visits_change
+                      </td>
+                      <td>
+                        @item.YoY_mail_visits_change
+                      </td>
+                      <td>
+                        @item.Referral_visits
+                      </td>
+                      <td>
+                        @item.MoM_referrals_visits_change
+                      </td>
+                      <td>
+                        @item.YoY_referrals_visits_change
+                      </td>
+                      <td>
+                        @item.Social_visits
+                      </td>
+                      <td>
+                        @item.MoM_social_visits_change
+                      </td>
+                      <td>
+                        @item.YoY_social_visits_change
+                      </td>
+                      <td>
+                        @item.Organic_search_visits
+                      </td>
+                      <td>
+                        @item.MoM_organic_search_change
+                      </td>
+                      <td>
+                        @item.YoY_organic_search_change
+                      </td>
+                      <td>
+                        @item.Paid_search_visits
+                      </td>
+                      <td>
+                        @item.MoM_paid_search_change
+                      </td>
+                      <td>
+                        @item.YoY_paid_search_change
+                      </td>
+                      <td>
+                        @item.Display_ad_traffic
+                      </td>
+                      <td>
+                        @item.MoM_display_traffic_change
+                      </td>
+                      <td>
+                        @item.YoY_display_visits_change
+                      </td>
+                      <td>
+                        @item.Company_name
+                      </td>
+                      <td>
+                        @item.HQ_address
+                      </td>
+                      <td>
+                        @item.HQ_city
+                      </td>
+                      <td>
+                        @item.HQ_state
+                      </td>
+                      <td>
+                        @item.HQ_country
+                      </td>
+                      <td>
+                        @item.HQ_postal_code
+                      </td>
+                      <td>
+                        @item.Employees
+                      </td>
+                      <td>
+                        @item.Revenue
+                      </td>
+                      <td>
+                        @item.Phone_number
+                      </td>
+                      <td>
+                        @item.Email_address
+                      </td>
+                      <td>
+                        @item.Male_distribution
+                      </td>
+                      <td>
+                        @item.Female_distribution
+                      </td>
+                      <td>
+                        @item.Ages_18_24
+                      </td>
+                      <td>
+                        @item.Ages_25_34
+                      </td>
+                      <td>
+                        @item.Ages_35_44
+                      </td>
+                      <td>
+                        @item.Ages_45_54
+                      </td>
+                      <td>
+                        @item.Ages_55_64
+                      </td>
+                      <td>
+                        @item.Ages_65_Plus
+                      </td>
+                      <td>
+                        @item.aux_visit_duration
+                      </td>
+                      <td>
+                        @item.Aux_Neg
+                      </td>
+                      <td>
+                        @item.Aux_Date_Day
+                      </td>
+                      <td>
+                        @item.Aux_Date_Month
+                      </td>
+                      <td>
+                        @item.Aux_Date_Year
+                      </td>
+                      <td>
+                        @item.Upload.FileName
+                      </td>
+                    </tr>
+                      }
+                    }
+                  </tbody>
+                  <tfoot>
+                    <tr>
+                    </tr>
+                  </tfoot>
+
+                </table>
+
+                @*@if (Model.Count() == 0)
+                  {
+                    @Html.ActionLink("New Sale", "Create", "Leads");
+                  }*@
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+@* ---------------------------------------------------------------------------------------------------------------------------------------------- *@
+
+<section class="content">
+  <div class="row">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-header">
+          <h3 class="card-title">Base Historical</h3>
+
+
+        </div>
+
+        <div class="card-body">
+
+          <div d="example2_wrapper" class="dataTables_wrapper dt-bootstrap4">
+            <div class="row">
+              <div class="col-sm-12 col-md-6">
+              </div>
+              <div class="col-sm-12 col-md-6"></div>
+            </div>
+            <div class="row">
+              <div class="col-sm-12">
+                <table id="example2" class="table table-bordered table-hover dataTable dtr-inline" role="grid" aria-describedby="example2_info">
+                  <thead>
+                    <tr role="row">
+                      <th>
+                        @Html.DisplayNameFor(model => model.Domain)
+                      </th>
+                      <th>
+                        @Html.DisplayNameFor(model => model.old)
+                      </th>
+                      <th>
+                        @Html.DisplayNameFor(model => model.new_data)
+                      </th>
+                      <th>
+                        @Html.DisplayNameFor(model => model.Current_Status)
+                      </th>
+                      <th>
+                        @Html.DisplayNameFor(model => model.type)
+                      </th>
+                      <th>
+                        @Html.DisplayNameFor(model => model.Super_Agency)
+                      </th>
+                      <th>
+                        @Html.DisplayNameFor(model => model.datechange)
+                      </th>
+
+                      <th></th>
+                    </tr>
+                  </thead>
+
+                  @foreach (var item in Model)
+                  {
+                    <tr>
+                      <td>
+                        @Html.DisplayFor(modelItem => item.Domain)
+                      </td>
+                      <td>
+                        @Html.DisplayFor(modelItem => item.old)
+                      </td>
+                      <td>
+                        @Html.DisplayFor(modelItem => item.new_data)
+                      </td>
+                      <td>
+                        @Html.DisplayFor(modelItem => item.Current_Status)
+                      </td>
+                      <td>
+                        @Html.DisplayFor(modelItem => item.type)
+                      </td>
+                      <td>
+                        @Html.DisplayFor(modelItem => item.Super_Agency)
+                      </td>
+                      <td>
+                        @Html.DisplayFor(modelItem => item.datechange)
+                      </td>
+
+                      <td>
+                        @*@Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
+                          @Html.ActionLink("Details", "Details", new { id = item.Id }) |
+                          @Html.ActionLink("Delete", "Delete", new { id = item.Id })*@
+                      </td>
+                    </tr>
+                  }
+
+                  <tfoot>
+
+                    <tr>
+                    </tr>
+
+
+                  </tfoot>
+
+                </table>
+
+
+
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+</section>
+
+<!-- page script -->
+<script>
+  $(document).ready(function () {
+    //$("#example1").DataTable({
+    //  "responsive": true,
+    //  "autoWidth": false,
+    //});
+    $('#example2').DataTable({
+      "paging": false,
+      "lengthChange": false,
+      "searching": true,
+      "ordering": true,
+      "info": false,
+      "autoWidth": false,
+      "responsive": true,
+    });
+
+    $('#example1').DataTable({
+      "paging": false,
+      "lengthChange": false,
+      "searching": true,
+      "ordering": true,
+      "info": false,
+      "autoWidth": false,
+      "responsive": true,
+    });
+    
+    $('a.toggle-vis').on('click', function (e) {
+      e.preventDefault();
+
+      // Get the column API object
+      var column = table.column($(this).attr('data-column'));
+
+      // Toggle the visibility
+      column.visible(!column.visible());
+    });
+  });
+</script>

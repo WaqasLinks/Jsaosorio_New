@@ -1,0 +1,75 @@
+@model jsaosorio.Models.BaseHistorical
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>BaseHistorical</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Domain)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Domain)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.old)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.old)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Current_Status)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Current_Status)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.type)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.type)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Super_Agency)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Super_Agency)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.datechange)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.datechange)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.new_data)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.new_data)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

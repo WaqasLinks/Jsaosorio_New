@@ -1,0 +1,168 @@
+@model IEnumerable<jsaosorio.Models.BaseDaily>
+
+@{
+  ViewBag.Title = "DNC List";
+  Layout = "~/Views/Shared/_Layout.cshtml";
+
+}
+
+
+
+
+<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<link rel="stylesheet" href="/resources/demos/style.css">
+
+@*<script src="https://code.jquery.com/jquery-1.12.4.js"></script>*@
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+<div class="container">
+  <div class="row">
+    <div class="col-sm">
+
+    </div>
+    <div class="col-sm">
+      <form name="registration_form_Product" id='registration_form_Product' class="form-inline">
+
+        @* <input type="hidden" name="SaleOrder.CustomerId" id="idnCustomer" value="" />*@
+
+        @*<input type="text" autocomplete="off" class="form-control" name="Customer.Name" id="customer" value="" placeholder="Search by customer" data-toggle="tooltip" data-placement="top" title="Search by customer">*@
+
+        @*@Html.Editor("startDate", new { htmlAttributes = new { @class = "form-control", @id = "datepickerStart", @placeholder = "Start date", @Value = ViewBag.StartDate } })*@
+
+        @*@Html.Editor("endDate", new { htmlAttributes = new { @class = "form-control", @id = "datepickerEnd", @placeholder = "End date", @Value = ViewBag.EndDate } })*@
+
+        @*@Html.DropDownList("SupplierId", null, htmlAttributes: new { @class = "form-control", @id = "SupplierId" })*@
+
+        @Html.Editor("SearchDNC", new { htmlAttributes = new { @class = "form-control", @id = "SearchDNC", @name = "SearchDNC", @placeholder = "Search Database" } })
+
+        <input type="button" value="Go" id="btnSearch" class="btn btn-info add-new" />
+        <div id="wait" style="display:none;"><img src='~/Images/Ripple_1s_200px_Transparent.gif' width="38" height="38" /></div>
+        @*<div id="wait" style="display:none;width:69px;height:89px;border:1px solid black;position:absolute;top:50%;left:50%;padding:2px;"><img src='~/Images/Ripple_1s_200px_Transparent.gif' width="64" height="64" /><br>Loading..</div>*@
+
+        @*<input type="date" value="Search" id="btnSearch1" class="form-control " />*@
+
+      </form>
+
+    </div>
+    <div class="col-sm">
+
+    </div>
+  </div>
+  <div class="row">
+
+    @{ if (@ViewBag.FileName != null)
+      {
+        <text>Uploaded File:</Text> <label>  @ViewBag.FileName</label> } }
+  </div>
+</div>
+
+
+@*<img src="~/Images/Ripple_1s_200px_Transparent.gif" />*@
+@*<img src="~/Images/Ripple_1s_200px_White.gif" />*@
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+@{ Html.RenderPartial("_SearchDNC", Model);}
+@*<script src="alert/dist/sweetalert-dev.js"></script>
+  <link rel="stylesheet" href="alert/dist/sweetalert.css">*@
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+<script type="text/javascript">
+
+
+    $(document).ready(function () {
+
+
+      var msg ='@ViewBag.Message1';
+
+      if (msg != null && msg !='') {
+        //JSalert();
+      }
+
+      function JSalert() {
+        /*alert(msg);*/
+        swal({
+          title: "Good job!",
+          text: msg,
+          icon: "success",
+          button: "Aww yiss!",
+        });
+      }
+
+        $('#btnSearch').click(function () {
+            SearchThis();
+        });
+
+        function SearchThis() {
+            //alert("yes");
+            var custId = "";
+
+            //var startDate = $('#startDate').val();
+            //var endDate = $('#endDate').val();
+
+            var startDate = $('#datepickerStart').datepicker({ dateFormat: 'dd-mm-yy' }).val();
+            var endDate = $('#datepickerEnd').datepicker({ dateFormat: 'dd-mm-yy' }).val();
+            var DNCPhone = $('#SearchDNC').val();
+          var SupplierId = $('#SupplierId').val();
+          //alert(SupplierId);
+            //if (startDate.trim() == "" && Date.parse(startDate)) {
+            //    //Valid date
+            //} else {
+            //    alert("Start date is not valid");
+            //    return false;
+            //}
+
+            //if (Date.parse(startDate)) {
+            //    //Valid date
+            //} else {
+            //    alert("End date is not valid");
+            //    return false;
+            //}
+
+            //$('#loading-image').show();
+            $.ajax({
+                url: "@Url.Action("SearchDNC", "BaseDaily")",
+              data: { 'DNCPhone': DNCPhone, 'SupplierId': SupplierId},
+                type: "GET",
+                cache: false,
+                success: function (data) {
+                    //alert(data);
+                    $("#NewData").html(data);
+
+                    //$("#hdnOrigComments").val($('#txtComments').val());
+                    //$('#lblCommentsNotification').text(savingStatus);
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    //$('#lblCommentsNotification').text("Error encountered while saving the comments.");
+                    alert('Data provided was not valid');
+                }
+            });
+        }
+
+      $(document).ajaxStart(function () {
+        $("#wait").css("display", "block");
+      });
+      $(document).ajaxComplete(function () {
+        $("#wait").css("display", "none");
+      });
+      //$("button").click(function () {
+      //  $("#txt").load("demo_ajax_load.asp");
+      //});
+
+      $('#btnSearch').attr('disabled', true);
+      $('#SearchDNC').keyup(function () {
+        if ($(this).val().length != 0)
+          $('#btnSearch').attr('disabled', false);
+        else
+          $('#btnSearch').attr('disabled', true);
+      })
+
+    });
+
+
+</script>
