@@ -288,10 +288,13 @@ namespace LeaveON.Controllers
           API_URL = "https://api.hunter.io/v2/domain-search?domain=" + SiteName + "&api_key=2c170b8aa69a1c0e87cb25dfdade18b3b4bf25e7";
 
           //------------please parse this Jason and save to Recipient table
+          using (WebClient wc = new WebClient())
+          {
+            var json = wc.DownloadString(API_URL);
 
-
-
+          }
           recipient = new Recipient { Id=Guid.NewGuid().ToString(),Department="", Domain="", Email="", FirstName="", LastName="", PhoneNumber="", Position="" };
+          LstRecipients.Add(recipient);
         }
       }
       db.Recipients.AddRange(LstRecipients);
