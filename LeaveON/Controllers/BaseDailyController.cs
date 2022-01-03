@@ -270,11 +270,11 @@ namespace LeaveON.Controllers
       objbulk.WriteToServer(tempDataSet.Tables[0]);
       con.Close();
       db.SaveChanges();//If any error during file upload, the file name should not be saved that why this is put in the end
-
+      ParseAPI();
     }
     public void ParseAPI()
     {
-      //https://api.hunter.io/v2/domain-search?domain=stripe.com&api_key=2c170b8aa69a1c0e87cb25dfdade18b3b4bf25e7
+      //https://api.hunter.io/v2/domain-search?domain=onze.com.br&api_key=2c170b8aa69a1c0e87cb25dfdade18b3b4bf25e7
 
       string SiteName = string.Empty;//"stripe.com";
       string API_URL = string.Empty;
