@@ -32,5 +32,6 @@ namespace jsaosorio.Models
         public virtual DbSet<AspNetUserLogin> AspNetUserLogins { get; set; }
         public virtual DbSet<BaseHistorical> BaseHistoricals { get; set; }
         public virtual DbSet<Upload> Uploads { get; set; }
+        public virtual DbSet<Recipient> Recipients { get; set; }
     }
 }

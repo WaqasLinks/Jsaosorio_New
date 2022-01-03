@@ -1,0 +1,142 @@
+
+@{
+  ViewBag.Title = "DNCSearch";
+}
+
+
+<section class="content">
+  <div class="row">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-header">
+          <h3 class="card-title">
+            Base Daily
+
+          </h3>
+        </div>
+
+
+        <div class="card-body">
+          <table id="dnctable" class="table table-striped table-bordered" style="width:100%">
+            <thead>
+              <tr>
+                <th>
+                  Domain
+                </th>
+                <th>
+                  deal
+                </th>
+                <th>
+                  agent
+                </th>
+                <th>
+                  Cor
+                </th>
+                <th>
+                  Neg
+                </th>
+                <th>
+                  date
+                </th>
+                <th>
+                  type
+                </th>
+                <th>
+                  datechange
+                </th>
+                @*<th>
+                  other1
+                </th>
+                <th>
+                  other2
+                </th>
+                <th>
+                  other3
+                </th>*@
+                <th>
+                  Traffic_Share
+                </th>
+                <th>
+                  Change
+                </th>
+                <th>
+                  Rank
+                </th>
+                <th>
+                  Monthly_Visits
+                </th>
+                <th>
+                  FileName
+                </th>
+
+              </tr>
+            </thead>
+
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+ 
+</section>
+
+
+<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/css/bootstrap.css" rel="stylesheet" />
+<link href="https://cdn.datatables.net/1.11.3/css/dataTables.bootstrap4.min.css" rel="stylesheet" />
+
+<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+<script src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.11.3/js/dataTables.bootstrap4.min.js"></script>
+
+<script>
+  $(document).ready(function () {
+    $("#dnctable").DataTable({
+      "ajax": {
+        "url": "/BaseDaily/GetDNCList",
+        "type": "POST",
+        "datatype": "json"
+      },
+      "columns": [
+
+        {
+          "data": "Domain", "name": "Domain",
+          "render": function (data, type, full) {
+            return '<a href="/BaseHistoricals/Index?domain=' + full.Domain + '" data-toggle="tooltip" data-placement="top" title="View Domain Details">' + full.Domain + '</a>'
+
+          }
+        },
+        { "data": "deal", "name": "deal" },
+        { "data": "agent", "name": "agent" },
+        { "data": "Cor", "name": "Cor" },
+        { "data": "Neg", "name": "Neg" },
+        { "data": "date", "name": "date" },
+        { "data": "type", "name": "type" },
+        { "data": "datechange", "name": "datechange" },
+        //{ "data": "other1", "name": "other1" },
+        //{ "data": "other2", "name": "other2" },
+        //{ "data": "other3", "name": "other3" },
+        { "data": "Traffic_Share", "name": "Traffic_Share" },
+        { "data": "Change", "name": "Change" },
+        { "data": "Rank", "name": "Rank" },
+        { "data": "Monthly_Visits", "name": "Monthly_Visits" },
+        { "data": "FileName", "name": "FileName" },
+
+
+      ],
+
+      "serverSide": "true",
+      "order": [0, "asc"],
+      "processing": "true",
+      "language": {
+        "processing": "processing... please wait"
+      }
+
+
+
+    });
+  });
+
+
+</script>
+
+

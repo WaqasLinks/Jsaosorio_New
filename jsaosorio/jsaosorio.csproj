@@ -84,6 +84,9 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>jsaosorioModel.edmx</DependentUpon>
     </Compile>
+    <Compile Include="Models\Recipient.cs">
+      <DependentUpon>jsaosorioModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\Upload.cs">
       <DependentUpon>jsaosorioModel.tt</DependentUpon>
     </Compile>

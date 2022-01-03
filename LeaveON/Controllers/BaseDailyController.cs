@@ -14,7 +14,8 @@ using jsaosorio.Models;
 using ExcelDataReader;
 using Microsoft.AspNet.Identity;
 using System.Configuration;
-
+using LeaveON.Models;
+using System.Linq.Dynamic;
 namespace LeaveON.Controllers
 {
   [Authorize(Roles = "Admin,Manager,User")]
@@ -22,6 +23,7 @@ namespace LeaveON.Controllers
   {
     //private CallCenterSalesEntities db = new CallCenterSalesEntities();
     private jsaosorioEntities db = new jsaosorioEntities();
+    DataSet tempDataSet;
     // GET: DNCs
 
     // GET: DNCs/Create
@@ -58,7 +60,7 @@ namespace LeaveON.Controllers
       int count = 0;
       DateTime dateTimeNow = DateTime.Now;
       string path = string.Empty;
-      string FileName=string.Empty;
+      string FileName = string.Empty;
       if (files != null)
       {
         foreach (var file in files)
@@ -88,10 +90,10 @@ namespace LeaveON.Controllers
     private void BulkInsert(DateTime dateTimeNow, int SupplierId, String FileName)
     {
       string UploadId = Guid.NewGuid().ToString();
-      db.Uploads.Add(new Upload() {Id= UploadId, FileName = FileName, DateCreated = dateTimeNow });
-      
+      db.Uploads.Add(new Upload() { Id = UploadId, FileName = FileName, DateCreated = dateTimeNow });
 
-      DataSet tempDataSet;
+
+
 
       using (var stream = System.IO.File.Open(Path.Combine(Server.MapPath("~/App_Data/Uploads"), FileName), FileMode.Open, FileAccess.Read))
       {
@@ -148,11 +150,11 @@ namespace LeaveON.Controllers
       //this.Text += " - Inserting to SQL SERVER...";
       //Application.DoEvents();
       //string connection = @"Data Source=WQSLAPTOP;Initial Catalog=db865726324;User Id = sa; Password = abc;";
-      
+
 
       var conn = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
       var csb = new SqlConnectionStringBuilder(conn);
-     
+
       //string connection = @"Data Source="+ csb.DataSource + ";Initial Catalog=" + csb.InitialCatalog + ";User Id =" + csb.UserID + ";Password =" + csb.Password + ";";
 
       //string connection = @"Data Source=db865726324.hosting-data.io;Initial Catalog=db865726324;User Id = dbo865726324; Password = CallCenterDB1*;";
@@ -268,6 +270,32 @@ namespace LeaveON.Controllers
       objbulk.WriteToServer(tempDataSet.Tables[0]);
       con.Close();
       db.SaveChanges();//If any error during file upload, the file name should not be saved that why this is put in the end
+
+    }
+    public void ParseAPI()
+    {
+      //https://api.hunter.io/v2/domain-search?domain=stripe.com&api_key=2c170b8aa69a1c0e87cb25dfdade18b3b4bf25e7
+
+      string SiteName = string.Empty;//"stripe.com";
+      string API_URL = string.Empty;
+      Recipient recipient;
+     List<Recipient> LstRecipients = new List<Recipient>();
+      foreach (DataRow dr in tempDataSet.Tables[0].Rows)
+      {
+        if (!(dr["Domain"] == DBNull.Value) && !(string.IsNullOrEmpty(dr["Domain"].ToString())) )
+        {
+          SiteName = dr["Domain"].ToString().Trim();
+          API_URL = "https://api.hunter.io/v2/domain-search?domain=" + SiteName + "&api_key=2c170b8aa69a1c0e87cb25dfdade18b3b4bf25e7";
+
+          //------------please parse this Jason and save to Recipient table
+
+
+
+          recipient = new Recipient { Id=Guid.NewGuid().ToString(),Department="", Domain="", Email="", FirstName="", LastName="", PhoneNumber="", Position="" };
+        }
+      }
+      db.Recipients.AddRange(LstRecipients);
+      db.SaveChanges();
     }
     [Authorize(Roles = "Admin,Manager,User")]
     public async Task<ActionResult> SearchDNC(string DNCPhone, string SupplierId)
@@ -286,8 +314,8 @@ namespace LeaveON.Controllers
       }
       else
       {
-        
-        
+
+
         //int suppId = int.Parse(SupplierId);
         var dNCs = db.BaseDailies.Where(x => x.AspNetUserId == LoggedInUserId && (x.AdSense.Contains(DNCPhone) ||
                                                                         x.Ages_18_24.Contains(DNCPhone) ||
@@ -388,6 +416,168 @@ namespace LeaveON.Controllers
       }
     }
 
+    /////// DOWNLOAD system.linq.dynamic Nuget Package
+    public ActionResult DNCSearch()
+    {
+
+      return View();
+    }
+
+    [HttpPost]
+    public ActionResult GetDNCList()
+    {
+      //Server Side Parameter
+      int start = Convert.ToInt32(Request["start"]);
+      int length = Convert.ToInt32(Request["length"]);
+      string searchValue = Request["search[value]"];
+      string sortColumnName = Request["columns[" + Request["order[0][column]"] + "][name]"];
+      string sortDirection = Request["order[0][dir]"];
+
+      List<BaseDaily> DNCList = new List<BaseDaily>();
+      db.Configuration.ProxyCreationEnabled = false;
+      DNCList = db.BaseDailies.Include("Upload").ToList<BaseDaily>();
+
+      var result = new List<BaseDaily2>();
+      for (int i = 0; i < DNCList.Count; i++)
+      {
+        var newRecord = new BaseDaily2();
+
+        //newRecord.IsSelected = DNCList[i].IsSelected;
+        newRecord.Domain = DNCList[i].Domain;
+        newRecord.deal = DNCList[i].deal;
+        newRecord.agent = DNCList[i].agent;
+        newRecord.Cor = DNCList[i].Cor;
+        newRecord.Neg = DNCList[i].Neg;
+        newRecord.date = DNCList[i].date;
+        newRecord.type = DNCList[i].type;
+        newRecord.datechange = DNCList[i].datechange;
+        //newRecord.other1 = DNCList[i].other1;
+        //newRecord.other2 = DNCList[i].other2;
+        //newRecord.other3 = DNCList[i].other3;
+        newRecord.Traffic_Share = DNCList[i].Traffic_Share;
+        newRecord.Change = DNCList[i].Change;
+        newRecord.Rank = DNCList[i].Rank;
+        newRecord.Monthly_Visits = DNCList[i].Monthly_Visits;
+        newRecord.FileName = DNCList[i].Upload.FileName;
+        result.Add(newRecord);
+      }
+
+
+      int totalrows = result.Count;
+      if (!string.IsNullOrEmpty(searchValue))//filter
+      {
+        result = result.
+            Where(x => (x.Domain == null ? "" : x.Domain.ToLower()).Contains(searchValue.ToLower()) ||
+            (x.deal == null ? "" : x.deal.ToLower()).Contains(searchValue.ToLower())
+               || (x.agent == null ? "" : x.agent.ToLower()).Contains(searchValue.ToLower())
+               || (x.Cor == null ? "" : x.Cor.ToLower()).Contains(searchValue.ToLower())
+               || (x.Neg == null ? "" : x.Neg.ToLower()).Contains(searchValue.ToLower())
+              || (x.date == null ? "" : x.date.ToLower()).Contains(searchValue.ToLower())
+             || (x.type == null ? "" : x.type.ToLower()).Contains(searchValue.ToLower())
+             || (x.datechange == null ? "" : x.datechange.ToLower()).Contains(searchValue.ToLower())
+              //|| (x.other1 == null ? "" : x.other1.ToLower()).Contains(searchValue.ToLower())
+              //|| (x.other2 == null ? "" : x.other2.ToLower()).Contains(searchValue.ToLower())
+              // || (x.other3 == null ? "" : x.other3.ToLower()).Contains(searchValue.ToLower())
+              || (x.Traffic_Share == null ? "" : x.Traffic_Share.ToLower()).Contains(searchValue.ToLower())
+               || (x.Change == null ? "" : x.Change.ToLower()).Contains(searchValue.ToLower())
+             || (x.Rank == null ? "" : x.Rank.ToLower()).Contains(searchValue.ToLower())
+             || (x.Monthly_Visits == null ? "" : x.Monthly_Visits.ToLower()).Contains(searchValue.ToLower())
+             || (x.FileName == null ? "" : x.FileName.ToLower()).Contains(searchValue.ToLower()))
+            .ToList<BaseDaily2>();
+      }
+      int totalrowsafterfiltering = result.Count;
+      //sorting
+      result = result.OrderBy(sortColumnName + " " + sortDirection).ToList<BaseDaily2>();
+      //paging
+      result = result.Skip(start).Take(length).ToList<BaseDaily2>();
+
+      return Json(new { data = result, draw = Request["draw"], recordsTotal = totalrows, recordsFiltered = totalrowsafterfiltering }, JsonRequestBehavior.AllowGet);
+
+
+
+
+    }
+
+    public ActionResult EmailSearch()
+    {
+
+      return View();
+    }
+
+    [HttpPost]
+    public ActionResult GetEmailsList()
+    {
+      //Server Side Parameter
+      int start = Convert.ToInt32(Request["start"]);
+      int length = Convert.ToInt32(Request["length"]);
+      string searchValue = Request["search[value]"];
+      string sortColumnName = Request["columns[" + Request["order[0][column]"] + "][name]"];
+      string sortDirection = Request["order[0][dir]"];
+
+      List<BaseDaily> DNCList = new List<BaseDaily>();
+      db.Configuration.ProxyCreationEnabled = false;
+      DNCList = db.BaseDailies.Include("Upload").ToList<BaseDaily>();
+
+      var result = new List<BaseDaily2>();
+      for (int i = 0; i < DNCList.Count; i++)
+      {
+        var newRecord = new BaseDaily2();
+
+        //newRecord.IsSelected = DNCList[i].IsSelected;
+        newRecord.Domain = DNCList[i].Domain;
+        newRecord.deal = DNCList[i].deal;
+        newRecord.agent = DNCList[i].agent;
+        newRecord.Cor = DNCList[i].Cor;
+        newRecord.Neg = DNCList[i].Neg;
+        newRecord.date = DNCList[i].date;
+        newRecord.type = DNCList[i].type;
+        newRecord.datechange = DNCList[i].datechange;
+        //newRecord.other1 = DNCList[i].other1;
+        //newRecord.other2 = DNCList[i].other2;
+        //newRecord.other3 = DNCList[i].other3;
+        newRecord.Traffic_Share = DNCList[i].Traffic_Share;
+        newRecord.Change = DNCList[i].Change;
+        newRecord.Rank = DNCList[i].Rank;
+        newRecord.Monthly_Visits = DNCList[i].Monthly_Visits;
+        newRecord.FileName = DNCList[i].Upload.FileName;
+        result.Add(newRecord);
+      }
+
+
+      int totalrows = result.Count;
+      if (!string.IsNullOrEmpty(searchValue))//filter
+      {
+        result = result.
+            Where(x => (x.Domain == null ? "" : x.Domain.ToLower()).Contains(searchValue.ToLower()) ||
+            (x.deal == null ? "" : x.deal.ToLower()).Contains(searchValue.ToLower())
+               || (x.agent == null ? "" : x.agent.ToLower()).Contains(searchValue.ToLower())
+               || (x.Cor == null ? "" : x.Cor.ToLower()).Contains(searchValue.ToLower())
+               || (x.Neg == null ? "" : x.Neg.ToLower()).Contains(searchValue.ToLower())
+              || (x.date == null ? "" : x.date.ToLower()).Contains(searchValue.ToLower())
+             || (x.type == null ? "" : x.type.ToLower()).Contains(searchValue.ToLower())
+             || (x.datechange == null ? "" : x.datechange.ToLower()).Contains(searchValue.ToLower())
+              //|| (x.other1 == null ? "" : x.other1.ToLower()).Contains(searchValue.ToLower())
+              //|| (x.other2 == null ? "" : x.other2.ToLower()).Contains(searchValue.ToLower())
+              // || (x.other3 == null ? "" : x.other3.ToLower()).Contains(searchValue.ToLower())
+              || (x.Traffic_Share == null ? "" : x.Traffic_Share.ToLower()).Contains(searchValue.ToLower())
+               || (x.Change == null ? "" : x.Change.ToLower()).Contains(searchValue.ToLower())
+             || (x.Rank == null ? "" : x.Rank.ToLower()).Contains(searchValue.ToLower())
+             || (x.Monthly_Visits == null ? "" : x.Monthly_Visits.ToLower()).Contains(searchValue.ToLower())
+             || (x.FileName == null ? "" : x.FileName.ToLower()).Contains(searchValue.ToLower()))
+            .ToList<BaseDaily2>();
+      }
+      int totalrowsafterfiltering = result.Count;
+      //sorting
+      result = result.OrderBy(sortColumnName + " " + sortDirection).ToList<BaseDaily2>();
+      //paging
+      result = result.Skip(start).Take(length).ToList<BaseDaily2>();
+
+      return Json(new { data = result, draw = Request["draw"], recordsTotal = totalrows, recordsFiltered = totalrowsafterfiltering }, JsonRequestBehavior.AllowGet);
+
+
+
+
+    }
     protected override void Dispose(bool disposing)
     {
       if (disposing)

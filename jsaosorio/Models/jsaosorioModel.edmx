@@ -71,7 +71,7 @@
           </Key>
           <Property Name="Id" Type="nvarchar" MaxLength="128" Nullable="false" />
           <Property Name="AspNetUserId" Type="nvarchar" MaxLength="128" />
-          <Property Name="Domain" Type="nvarchar" MaxLength="500" Nullable="false" />
+          <Property Name="Domain" Type="nvarchar" MaxLength="500" />
           <Property Name="deal" Type="nvarchar" MaxLength="500" />
           <Property Name="agent" Type="nvarchar" MaxLength="500" />
           <Property Name="Cor" Type="nvarchar" MaxLength="500" />
@@ -198,6 +198,19 @@
           <Property Name="Super_Agency" Type="nvarchar" MaxLength="500" />
           <Property Name="datechange" Type="nvarchar" MaxLength="500" />
         </EntityType>
+        <EntityType Name="Recipient">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="Domain" Type="nvarchar" MaxLength="500" />
+          <Property Name="Email" Type="nvarchar" MaxLength="500" />
+          <Property Name="FirstName" Type="nvarchar" MaxLength="500" />
+          <Property Name="LastName" Type="nvarchar" MaxLength="500" />
+          <Property Name="Position" Type="nvarchar" MaxLength="500" />
+          <Property Name="Department" Type="nvarchar" MaxLength="500" />
+          <Property Name="PhoneNumber" Type="nvarchar" MaxLength="500" />
+        </EntityType>
         <EntityType Name="Upload">
           <Key>
             <PropertyRef Name="Id" />
@@ -298,6 +311,7 @@
           <EntitySet Name="AspNetUsers" EntityType="Self.AspNetUsers" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="BaseDaily" EntityType="Self.BaseDaily" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="BaseHistorical" EntityType="Self.BaseHistorical" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Recipient" EntityType="Self.Recipient" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Upload" EntityType="Self.Upload" Schema="dbo" store:Type="Tables" />
           <AssociationSet Name="FK_BaseDaily_AspNetUsers" Association="Self.FK_BaseDaily_AspNetUsers">
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
@@ -364,7 +378,7 @@
           </Key>
           <Property Name="Id" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="AspNetUserId" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
-          <Property Name="Domain" Type="String" MaxLength="500" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Domain" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
           <Property Name="deal" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
           <Property Name="agent" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
           <Property Name="Cor" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
@@ -522,6 +536,7 @@
             <End Role="Upload" EntitySet="Uploads" />
             <End Role="BaseDaily" EntitySet="BaseDailies" />
           </AssociationSet>
+          <EntitySet Name="Recipients" EntityType="jsaosorioModel.Recipient" />
         </EntityContainer>
         <EntityType Name="AspNetRole">
           <Key>
@@ -620,6 +635,19 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="Recipient">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="Domain" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="Email" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="FirstName" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="LastName" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="Position" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="Department" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="PhoneNumber" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -828,6 +856,20 @@
               <MappingFragment StoreEntitySet="Upload">
                 <ScalarProperty Name="DateCreated" ColumnName="DateCreated" />
                 <ScalarProperty Name="FileName" ColumnName="FileName" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Recipients">
+            <EntityTypeMapping TypeName="jsaosorioModel.Recipient">
+              <MappingFragment StoreEntitySet="Recipient">
+                <ScalarProperty Name="PhoneNumber" ColumnName="PhoneNumber" />
+                <ScalarProperty Name="Department" ColumnName="Department" />
+                <ScalarProperty Name="Position" ColumnName="Position" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Domain" ColumnName="Domain" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
