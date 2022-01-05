@@ -1,4 +1,4 @@
-
+@model IEnumerable<jsaosorio.Models.Recipient>
 @{
   ViewBag.Title = "DNCSearch";
 }
@@ -75,9 +75,13 @@
 
           </table>
           @*<input type="button" id="btnSelectedRows" value="Send Email" />*@
-          <button id="btnSelectedRows">
-            Get Selected Rows
+          @*<button id="btnSelectedRows">Show Selected Rows</button>*@
+          <button id="ShowModal" type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">
+            Send Email
           </button>
+          @*<button type="button" class="btn btn-primary btn-block btn-lg" data-toggle="modal" data-target="#myModal">
+            Open modal
+          </button>*@
         </div>
       </div>
     </div>
@@ -85,6 +89,38 @@
 
 </section>
 
+<!-- Button trigger modal -->
+
+
+
+
+  <!-- The Modal -->
+  <div class="modal" id="myModal">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <h4 class="modal-title">Select Emails</h4>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+
+        <!-- Modal body -->
+        @{ Html.RenderPartial("_EmailSearch", Model);}
+
+        <!-- Modal footer -->
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+
+
+
+@*<div id="test1"></div>*@
 
 @*<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/css/bootstrap.css" rel="stylesheet" />
   <link href="https://cdn.datatables.net/1.11.3/css/dataTables.bootstrap4.min.css" rel="stylesheet" />
@@ -160,39 +196,61 @@
 
     });
 
-    //$('#btnSelectedRows').on('click', function () {
-    //  /*alert('');*/
-    //  var tblData = $('#dnctable').rows('.selected').data();
-    //  alert(tblData);
-    //  var tmpData;
-    //  $.each(tblData, function (i, val) {
-    //    tmpData = tblData[i];
-    //    alert(tmpData);
-    //  });
-    //})
 
-    //$('#btnSelectedRows').on('click', function () {
+    // CSHTML
+    $('#ShowModal').click(function () {
+      var myArr = [];
+      var selectedRows = table.rows('.selected').data().map(function (item) { return item.Domain; });
+      for (var i = 0; i < selectedRows.length; i++) {
+        myArr.push(selectedRows[i]);
+      }
+      $.ajax({
+        url: '/BaseDaily/GetSelectedRows',
+        type: "POST",
+        data: { 'obj': myArr }
+      })
+        .done(function (data) {
+          // res containing list of domains and its emails
+          /*alert(res);*/
 
-    //  $.each(table.rows('.selected').nodes(), function (i, item) {
-    //    var id = item.id;
-    //    var data = table.row(this).data();
+          //var parsed_data = JSON.parse(res);
+          //alert(parsed_data);
+          //alert('s');
+          $("#NewData").html(data);
 
-    //    alert("Produt Id : " +
-    //      id + " && product Status:  " + data[6]);
-    //  });
-    //})
+          //$("#NewData").html(res);
+          //alert($("#NewData").html());
+
+
+        })
+        .fail(function (res) {
+          alert('f');
+        })
+
+    });
 
     var table = $('#dnctable').DataTable();
     $('#example tbody').on('click', 'tr', function () {
       $(this).toggleClass('selected');
     });
 
-    $('#btnSelectedRows').click(function () {
-      alert(table.rows('.selected').data().length + ' row(s) selected');
-      
+    //$('.modal').click(function () {
+    //  //alert(table.rows('.selected').data().length + ' row(s) selected');
+    //  /*$('#modal').modal('show');*/
+    //  $(".btn").click(function () {
+    //    $("#exampleModal").modal('show');
+    //  });
 
+    //});
 
-    });
+    //$('#showModal').click(function () {
+    //  alert(table.rows('.selected').data().length + ' row(s) selected');
+
+    //});
+
+    //$('#myModal').modal('toggle');
+    //$('#myModal').modal('show');
+    //$('#myModal').modal('hide');
 
   });
 

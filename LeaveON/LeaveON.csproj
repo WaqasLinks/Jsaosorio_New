@@ -2276,6 +2276,7 @@
     <Content Include="Views\BaseHistoricals\Index.cshtml" />
     <Content Include="Views\BaseDaily\DNCSearch.cshtml" />
     <Content Include="Views\BaseDaily\EmailSearch.cshtml" />
+    <Content Include="Views\BaseDaily\_EmailSearch.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Views\SelectWeakListHtmlHelper\" />

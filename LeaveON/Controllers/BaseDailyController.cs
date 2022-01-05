@@ -275,7 +275,8 @@ namespace LeaveON.Controllers
       db.SaveChanges();//If any error during file upload, the file name should not be saved that why this is put in the end
       //ParseAPI();
       //Call APIFUNCTION inside Bulk (in LaSt)
-      var task = Task.Run(async () => {
+      var task = Task.Run(async () =>
+      {
         ParseAPI();
       });
     }
@@ -359,7 +360,7 @@ namespace LeaveON.Controllers
     }
 
 
-    
+
     [Authorize(Roles = "Admin,Manager,User")]
     public async Task<ActionResult> SearchDNC(string DNCPhone, string SupplierId)
     {
@@ -641,6 +642,61 @@ namespace LeaveON.Controllers
 
 
     }
+
+    //public ActionResult GetSelectedRows(List<string> obj)
+    //{
+    //  var result = new List<SelectedRows>();
+    //  for (int i = 0; i < obj.Count; i++)
+    //  {
+    //    var myData = new SelectedRows();
+    //    myData.Domain = obj[i];
+    //    myData.Emails = db.Recipients.ToList().Where(x => x.Domain == obj[i]).Select(x => x.Email).ToList();
+
+    //    result.Add(myData);
+    //  }
+    //  return Json(db.Recipients.ToList(), JsonRequestBehavior.AllowGet);
+    //}
+
+    [HttpPost]
+    public ActionResult GetSelectedRows(List<string> obj)
+    {
+      List<Recipient> recipients = new List<Recipient>();
+      List<Recipient> LstRecipients = new List<Recipient>();
+      var selectedRow = new SelectedRow();
+      string email=string.Empty;
+      List<string> LstEmail = new List<string>();
+      var LstSelectedRows = new List<SelectedRow>();
+      
+      foreach ( string item in obj)
+      {
+        recipients = db.Recipients.Where(x => x.Domain == item).ToList();
+        LstRecipients.AddRange(recipients);
+       
+
+        //foreach (Recipient recipient in recipients)
+        //{
+        //  if ( LstSelectedRows.FirstOrDefault(x=>x.Domain==recipient.Domain)==null)
+        //  {
+        //    foreach (string email in recipient.Email)
+        //    new SelectedRow { Domain = recipient.Domain };
+
+        //    LstSelectedRows.Add(new se);
+
+        //  }
+        //}
+
+
+
+        
+      }
+      var query = LstRecipients.GroupBy(x => x.Domain );
+
+
+      //return Json(db.Recipients.ToList(), JsonRequestBehavior.AllowGet);
+      //return Json(result, JsonRequestBehavior.AllowGet);
+      return PartialView("_EmailSearch", LstRecipients);
+    }
+
     protected override void Dispose(bool disposing)
     {
       if (disposing)

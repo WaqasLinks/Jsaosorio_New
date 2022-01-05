@@ -1,0 +1,94 @@
+@model IEnumerable<jsaosorio.Models.Recipient>
+
+@{
+
+  <div class="modal-body" id="NewData">
+
+
+
+    @*<table id="example2" class="table table-bordered table-hover dataTable dtr-inline display" style="width:100%" role="grid" aria-describedby="example2_info">*@
+    <table class="table table-striped" id="example1">
+      <thead>
+        <tr>
+
+          <th>
+            @Html.DisplayNameFor(model => model.Domain)
+          </th>
+          <th>
+            @Html.DisplayNameFor(model => model.Email)
+          </th>
+
+        </tr>
+      </thead>
+      <tbody>
+        @if (Model != null)
+        {
+
+          foreach (var item in Model)
+          {
+            <tr>
+
+              <td>
+                @Html.DisplayFor(modelItem => item.Domain)
+              </td>
+              <td>
+                @Html.DisplayFor(modelItem => item.Email)
+              </td>
+
+            </tr>
+          }
+        }
+      </tbody>
+
+    </table>
+
+
+
+
+  </div>
+
+
+}
+
+
+<link href="https://cdn.datatables.net/1.11.3/css/jquery.dataTables.min.css" rel="stylesheet" />
+<link href="https://cdn.datatables.net/select/1.3.3/css/select.dataTables.min.css" rel="stylesheet" />
+
+<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+<script src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/select/1.3.3/js/dataTables.select.min.js"></script>
+
+
+<script type="text/javascript">
+
+  $(document).ready(function () {
+
+    $('#example').DataTable({
+      columnDefs: [{
+        orderable: false,
+        className: 'select-checkbox',
+        targets: 0
+      }],
+      select: {
+        style: 'os',
+        selector: 'td:first-child'
+      },
+      order: [[1, 'asc']]
+    });
+
+
+
+    //$('a.toggle-vis').on('click', function (e) {
+    //  e.preventDefault();
+
+    //  // Get the column API object
+    //  var column = table.column($(this).attr('data-column'));
+
+    //  // Toggle the visibility
+    //  column.visible(!column.visible());
+    //});
+
+  });
+
+
+</script>

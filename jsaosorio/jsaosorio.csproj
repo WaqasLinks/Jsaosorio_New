@@ -65,7 +65,7 @@
     <Compile Include="Models\BaseDaily.cs">
       <DependentUpon>jsaosorioModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Class1.cs" />
+    <Compile Include="ViewModels\SelectedRow.cs" />
     <Compile Include="Models\BaseHistorical.cs">
       <DependentUpon>jsaosorioModel.tt</DependentUpon>
     </Compile>
