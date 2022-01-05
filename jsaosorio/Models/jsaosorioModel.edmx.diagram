@@ -4,7 +4,7 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="7608b3b8d1e1459393d84781030ff2f7" Name="Diagram1" ZoomLevel="85">
+      <Diagram DiagramId="7608b3b8d1e1459393d84781030ff2f7" Name="Diagram1" ZoomLevel="29">
         <EntityTypeShape EntityType="jsaosorioModel.AspNetUser" Width="1.5" PointX="0.75" PointY="10.875" IsExpanded="true" />
         <EntityTypeShape EntityType="jsaosorioModel.BaseDaily" Width="1.5" PointX="3" PointY="2" IsExpanded="true" />
         <AssociationConnector Association="jsaosorioModel.FK_BaseDaily_AspNetUsers" ManuallyRouted="false" />

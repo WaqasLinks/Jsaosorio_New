@@ -16,6 +16,9 @@ using Microsoft.AspNet.Identity;
 using System.Configuration;
 using LeaveON.Models;
 using System.Linq.Dynamic;
+using System.Net.Http;
+using Newtonsoft.Json;
+
 namespace LeaveON.Controllers
 {
   [Authorize(Roles = "Admin,Manager,User")]
@@ -83,7 +86,7 @@ namespace LeaveON.Controllers
       TempData["FileName"] = FileName;
       //return new JsonResult { Data = "Successfully " + count + " file(s) uploaded" };
       //return RedirectToAction("Index","Uploads");
-      return RedirectToAction("SearchDNC");
+      return RedirectToAction("DNCSearch");
       //return View("SearchDNC");
 
     }
@@ -270,36 +273,93 @@ namespace LeaveON.Controllers
       objbulk.WriteToServer(tempDataSet.Tables[0]);
       con.Close();
       db.SaveChanges();//If any error during file upload, the file name should not be saved that why this is put in the end
-      ParseAPI();
+      //ParseAPI();
+      //Call APIFUNCTION inside Bulk (in LaSt)
+      var task = Task.Run(async () => {
+        ParseAPI();
+      });
     }
-    public void ParseAPI()
+    public async void ParseAPI()
     {
-      //https://api.hunter.io/v2/domain-search?domain=onze.com.br&api_key=2c170b8aa69a1c0e87cb25dfdade18b3b4bf25e7
+      //https://api.hunter.io/v2/domain-search?domain=stripe.com&api_key=2c170b8aa69a1c0e87cb25dfdade18b3b4bf25e7
 
       string SiteName = string.Empty;//"stripe.com";
       string API_URL = string.Empty;
-      Recipient recipient;
-     List<Recipient> LstRecipients = new List<Recipient>();
+      Recipient recipient = new Recipient();
+      List<Recipient> LstRecipients = new List<Recipient>();
       foreach (DataRow dr in tempDataSet.Tables[0].Rows)
       {
-        if (!(dr["Domain"] == DBNull.Value) && !(string.IsNullOrEmpty(dr["Domain"].ToString())) )
+        if (!(dr["Domain"] == DBNull.Value) && !(string.IsNullOrEmpty(dr["Domain"].ToString())))
         {
           SiteName = dr["Domain"].ToString().Trim();
           API_URL = "https://api.hunter.io/v2/domain-search?domain=" + SiteName + "&api_key=2c170b8aa69a1c0e87cb25dfdade18b3b4bf25e7";
 
           //------------please parse this Jason and save to Recipient table
-          using (WebClient wc = new WebClient())
+          using (var client = new HttpClient())
           {
-            var json = wc.DownloadString(API_URL);
+
+            client.BaseAddress = new Uri("https://api.hunter.io/v2/");
+            var responseTask = client.GetAsync("domain-search?domain=" + SiteName + "&api_key=2c170b8aa69a1c0e87cb25dfdade18b3b4bf25e7");
+            responseTask.Wait();
+            var Res = responseTask.Result;
+            if (Res.IsSuccessStatusCode)
+            {
+              var response = Res.Content.ReadAsStringAsync().Result;
+              var obj = JsonConvert.DeserializeObject<ParentJSONTable>(response);
+              for (int o = 0; o < obj.data.emails.Count; o++)
+              {
+                var newRec = new Recipient();
+                newRec.Id = Guid.NewGuid().ToString();
+                newRec.Domain = obj.data.domain;
+                newRec.FirstName = obj.data.emails[o].first_name;
+                newRec.LastName = obj.data.emails[o].last_name;
+                newRec.Department = obj.data.emails[o].department;
+                newRec.Position = obj.data.emails[o].position;
+                newRec.Email = obj.data.emails[o].value;
+                LstRecipients.Add(newRec);
+              }
+
+
+            }
 
           }
-          recipient = new Recipient { Id=Guid.NewGuid().ToString(),Department="", Domain="", Email="", FirstName="", LastName="", PhoneNumber="", Position="" };
-          LstRecipients.Add(recipient);
+
+
+          //recipient = new Recipient { Id=Guid.NewGuid().ToString(),Department="", Domain="", Email="", FirstName="", LastName="", PhoneNumber="", Position="" };
         }
       }
-      db.Recipients.AddRange(LstRecipients);
-      db.SaveChanges();
+      using (var dbContext = new jsaosorioEntities())
+      {
+        dbContext.Recipients.AddRange(LstRecipients);
+        dbContext.SaveChanges();
+
+      }
+
     }
+
+
+
+    public class ParentJSONTable
+    {
+      public ChildJSONTable data { get; set; }
+    }
+    public class ChildJSONTable
+    {
+      public string domain { get; set; }
+      public List<JSONRecords> emails { get; set; }
+    }
+    public class JSONRecords
+    {
+      public string value { get; set; }
+      public string first_name { get; set; }
+      public string last_name { get; set; }
+      public string department { get; set; }
+      public string phone_number { get; set; }
+      public string position { get; set; }
+    }
+
+
+    
     [Authorize(Roles = "Admin,Manager,User")]
     public async Task<ActionResult> SearchDNC(string DNCPhone, string SupplierId)
     {
