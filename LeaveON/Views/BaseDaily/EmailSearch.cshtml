@@ -46,14 +46,14 @@
                   datechange
                 </th>
                 @*<th>
-            other1
-          </th>
-          <th>
-            other2
-          </th>
-          <th>
-            other3
-          </th>*@
+                    other1
+                  </th>
+                  <th>
+                    other2
+                  </th>
+                  <th>
+                    other3
+                  </th>*@
                 <th>
                   Traffic_Share
                 </th>
@@ -76,12 +76,12 @@
           </table>
           @*<input type="button" id="btnSelectedRows" value="Send Email" />*@
           @*<button id="btnSelectedRows">Show Selected Rows</button>*@
-          <button id="ShowModal" type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">
-            Send Email
+          <button id="ShowModal" type="button" class="btn btn-warning" data-toggle="modal" data-target="#myModal">
+            Load Selected Domain's Email(s)
           </button>
           @*<button type="button" class="btn btn-primary btn-block btn-lg" data-toggle="modal" data-target="#myModal">
-            Open modal
-          </button>*@
+              Open modal
+            </button>*@
         </div>
       </div>
     </div>
@@ -90,32 +90,88 @@
 </section>
 
 <!-- Button trigger modal -->
+<!-- The Modal -->
+<div class="modal" id="myModal">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
 
-
-
-
-  <!-- The Modal -->
-  <div class="modal" id="myModal">
-    <div class="modal-dialog modal-lg">
-      <div class="modal-content">
-
-        <!-- Modal Header -->
-        <div class="modal-header">
-          <h4 class="modal-title">Select Emails</h4>
-          <button type="button" class="close" data-dismiss="modal">&times;</button>
-        </div>
-
-        <!-- Modal body -->
-        @{ Html.RenderPartial("_EmailSearch", Model);}
-
-        <!-- Modal footer -->
-        <div class="modal-footer">
-          <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-        </div>
-
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <h4 class="modal-title">Select Emails</h4>
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
       </div>
+
+      <!-- Modal body -->
+      @{ Html.RenderPartial("_EmailSearch", Model);}
+
+
+      @* --------upload template file---- *@
+
+      <div class="col-12">
+        <div class="card">
+          <div class="card-header">
+            <h3 class="card-title">Choose Template File and Send Email</h3>
+            <div class="form-group">
+              @*@Html.LabelFor(model => model.userLeavePolicy.AnnualOffDays, "Annual Off Days", htmlAttributes: new { @class = "card-title " })*@
+
+              @*@Html.EditorFor(model => model.userLeavePolicy.AnnualOffDays, new { htmlAttributes = new { @class = "form-control" } })*@
+
+
+              @*<div class="alert-icon">
+
+                </div>*@
+              <br /> <br />
+              @*(1) Please chosse file. This file should contain Annual off days record in three comma separated columns (CSV) <mark>Date,Description</mark> format*@
+              (1)
+
+              <input type="file" id="FileUpload1" />
+
+
+              @*       @Html.ValidationMessageFor(model => model.userLeavePolicy.AnnualOffDays, "", new { @class = "text-danger" })*@
+
+              @*<br />*@
+              <br />
+              <br />
+              @*<div class="alert alert-default-light" role="alert">*@
+              (2)
+              <input class="btn btn-info" type="button" id="btnUpload" value="Send Email" />
+              @*</div>*@
+
+              <div style="display:none" id="emailAlert" class="alert alert-success" role="alert">
+                Email(s) Sent
+              </div>
+
+              @*<br />*@
+
+            </div>
+            <div id="NewData">
+              @{ if (ViewBag.AnnualLeaves != null)
+                {
+                  Html.RenderPartial("_DisplayAnnualLeaves");
+                } }
+
+
+
+            </div>
+            @*<table id="customFields" class="table table-bordered table-hover  " role="grid">
+              </table>
+              <a class="btn btn-default" href="javascript:void(0);" id="AnnualOffDays" style="background-color: #ffcc5c">Add Off Day  </a>*@
+          </div>
+        </div>
+      </div>
+
+
+
+      @* ---------------------- *@
+
+      <!-- Modal footer -->
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+      </div>
+
     </div>
   </div>
+</div>
 
 
 
@@ -196,9 +252,9 @@
 
     });
 
-
     // CSHTML
     $('#ShowModal').click(function () {
+      $("#emailAlert").hide();
       var myArr = [];
       var selectedRows = table.rows('.selected').data().map(function (item) { return item.Domain; });
       for (var i = 0; i < selectedRows.length; i++) {
@@ -224,10 +280,13 @@
 
         })
         .fail(function (res) {
-          alert('f');
+          alert('Error');
         })
 
     });
+
+    
+
 
     var table = $('#dnctable').DataTable();
     $('#example tbody').on('click', 'tr', function () {
@@ -254,6 +313,56 @@
 
   });
 
+  $('#btnUpload').click(function () {
+
+    
+    
+    // Checking whether FormData is available in browser
+    if (window.FormData !== undefined) {
+
+      var fileUpload = $("#FileUpload1").get(0);
+      var files = fileUpload.files;
+
+      // Create FormData object
+      var fileData = new FormData();
+
+      // Looping over all files and add it to FormData object
+      for (var i = 0; i < files.length; i++) {
+        fileData.append(files[i].name, files[i]);
+      }
+
+      //$('select').change((e) => {
+        var selectedEmails = $("option:selected").map(function () { return this.value }).get();
+        //alert(selectedEmails);
+        //console.log(selected);
+      //});
+      // Adding one more key to FormData object
+      //fileData.append('username', 'Manas');
+      //alert('1');
+      $.ajax({
+        url: '/BaseDaily/UploadAndSend',
+        type: "POST",
+        contentType: false, // Not to set any content header
+        processData: false, // Not to process data
+        data: fileData,
+        //data: {'fileData': fileData, 'selectedEmails': selectedEmails },
+        //data: JSON.stringify({ 'selectedEmails': selectedEmails }),
+        success: function (result) {
+          //alert(result);
+          //alert('4');
+          //$("#NewData").html(result);
+          $("#emailAlert").show();
+        },
+        error: function (err) {
+          alert(err.statusText);
+          //alert('5');
+        }
+      });
+    } else {
+      alert("Error.");
+    }
+
+  });
 
 </script>
 

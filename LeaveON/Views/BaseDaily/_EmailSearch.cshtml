@@ -1,4 +1,4 @@
-@model IEnumerable<jsaosorio.Models.Recipient>
+@model IEnumerable<jsaosorio.Models.SelectedRow>
 
 @{
 
@@ -15,7 +15,12 @@
             @Html.DisplayNameFor(model => model.Domain)
           </th>
           <th>
-            @Html.DisplayNameFor(model => model.Email)
+            Other2
+          </th>
+
+          <th>
+            @*@Html.DisplayNameFor(model => model.Email)*@
+            Email
           </th>
 
         </tr>
@@ -26,16 +31,21 @@
 
           foreach (var item in Model)
           {
-            <tr>
+        <tr>
 
-              <td>
-                @Html.DisplayFor(modelItem => item.Domain)
-              </td>
-              <td>
-                @Html.DisplayFor(modelItem => item.Email)
-              </td>
+          <td>
+            @Html.DisplayFor(modelItem => item.Domain)
+          </td>
 
-            </tr>
+          <td>
+
+          </td>
+
+          <td>
+            @Html.DropDownListFor(modelItem => item.Emails, new SelectList(item.Emails), null, new { @class = "form-control" })
+          </td>
+
+        </tr>
           }
         }
       </tbody>

@@ -662,39 +662,105 @@ namespace LeaveON.Controllers
     {
       List<Recipient> recipients = new List<Recipient>();
       List<Recipient> LstRecipients = new List<Recipient>();
-      var selectedRow = new SelectedRow();
-      string email=string.Empty;
-      List<string> LstEmail = new List<string>();
+      SelectedRow selectedRow;// = new SelectedRow();
+      string email = string.Empty;
+      //List<string> LstEmail; //= new List<string>();
       var LstSelectedRows = new List<SelectedRow>();
-      
-      foreach ( string item in obj)
+
+      foreach (string item in obj)
       {
         recipients = db.Recipients.Where(x => x.Domain == item).ToList();
         LstRecipients.AddRange(recipients);
-       
+      }
 
-        //foreach (Recipient recipient in recipients)
-        //{
-        //  if ( LstSelectedRows.FirstOrDefault(x=>x.Domain==recipient.Domain)==null)
-        //  {
-        //    foreach (string email in recipient.Email)
-        //    new SelectedRow { Domain = recipient.Domain };
+      var query = LstRecipients.GroupBy(x => x.Domain);
 
-        //    LstSelectedRows.Add(new se);
-
-        //  }
-        //}
-
-
-
+      foreach (var item in query)
+      {
+        //LstEmail = item.Select(x => x.Email).ToList();//.ToList<Recipient>();
+        selectedRow = new SelectedRow { Domain = item.Key, Emails = item.Select(x => x.Email).ToList() };
+        LstSelectedRows.Add(selectedRow);
+        List< BaseDaily> LstBaseDailies= db.BaseDailies.Where(x => x.Domain == item.Key).ToList();
+        foreach(BaseDaily baseDaily in LstBaseDailies)
+        {
+          baseDaily.other2 = "true";
+          db.Entry(baseDaily).State= EntityState.Modified;
+          db.Entry(baseDaily).Property(x => x.other2).IsModified = true;
+          
+        }
         
       }
-      var query = LstRecipients.GroupBy(x => x.Domain );
+      db.SaveChanges();
+
+      //foreach (Recipient recipient in recipients)
+      //  {
+      //    if (LstSelectedRows.FirstOrDefault(x => x.Domain == recipient.Domain) == null)
+      //    {
+      //      //foreach (string email in recipient.Email)
+      //      //{
+      //      //  new SelectedRow { Domain = recipient.Domain };
+
+      //      //  LstSelectedRows.Add(new se);
+      //      //}
+      //    }
+      //  }
 
 
       //return Json(db.Recipients.ToList(), JsonRequestBehavior.AllowGet);
       //return Json(result, JsonRequestBehavior.AllowGet);
-      return PartialView("_EmailSearch", LstRecipients);
+      return PartialView("_EmailSearch", LstSelectedRows);
+    }
+    public class MyList
+    {
+      public int Id { get; set; }
+      public string Value { get; set; }
+    }
+    [Authorize(Roles = "Admin")]
+    [HttpPost]
+    public ActionResult UploadAndSend()
+    //public ActionResult UploadAndSend(List<MyList> fileData, List<MyList> selectedEmails)
+    {
+      if (Request.Files.Count > 0)
+      {
+        try
+        {
+          HttpFileCollectionBase postedFiles = Request.Files;
+          HttpPostedFileBase postedFile = postedFiles[0];
+          
+          string filePath = string.Empty;
+          if (postedFile != null)
+          {
+            string path = Server.MapPath("~/Uploads/");
+            if (!Directory.Exists(path))
+            {
+              Directory.CreateDirectory(path);
+            }
+
+            filePath = path + Path.GetFileName(postedFile.FileName);
+            string extension = Path.GetExtension(postedFile.FileName);
+            postedFile.SaveAs(filePath);
+
+            //Read the contents of CSV file.
+            string emailBodyText = System.IO.File.ReadAllText(filePath);
+            
+            }
+          //SendEmail.SendEmailUsingSMTP(, emailBodyText);
+
+          //return PartialView("_DisplayAnnualLeaves", annualLeaves);
+          return View();
+          //
+
+          //return PartialView("_DisplayAnnualLeaves");
+        }
+        catch (Exception ex)
+        {
+          return Json("Error occurred. Error details: " + ex.Message);
+        }
+      }
+      else
+      {
+        return Json("No files selected.");
+      }
     }
 
     protected override void Dispose(bool disposing)
