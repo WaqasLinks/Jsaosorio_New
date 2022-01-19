@@ -275,12 +275,13 @@ namespace LeaveON.Controllers
       db.SaveChanges();//If any error during file upload, the file name should not be saved that why this is put in the end
       //ParseAPI();
       //Call APIFUNCTION inside Bulk (in LaSt)
-      var task = Task.Run(async () =>
-      {
-        ParseAPI();
-      });
+      //var task = Task.Run(ParseAPI);
+      Task.Run(ParseAPI);
+      //ParseAPI();
+
+
     }
-    public async void ParseAPI()
+    public void ParseAPI()
     {
       //https://api.hunter.io/v2/domain-search?domain=stripe.com&api_key=2c170b8aa69a1c0e87cb25dfdade18b3b4bf25e7
 
@@ -481,6 +482,7 @@ namespace LeaveON.Controllers
     }
 
     /////// DOWNLOAD system.linq.dynamic Nuget Package
+    [Authorize(Roles = "Admin,Manager,User")]
     public ActionResult DNCSearch()
     {
 
@@ -666,32 +668,33 @@ namespace LeaveON.Controllers
       string email = string.Empty;
       //List<string> LstEmail; //= new List<string>();
       var LstSelectedRows = new List<SelectedRow>();
-
-      foreach (string item in obj)
+      if (obj != null)
       {
-        recipients = db.Recipients.Where(x => x.Domain == item).ToList();
-        LstRecipients.AddRange(recipients);
-      }
-
-      var query = LstRecipients.GroupBy(x => x.Domain);
-
-      foreach (var item in query)
-      {
-        //LstEmail = item.Select(x => x.Email).ToList();//.ToList<Recipient>();
-        selectedRow = new SelectedRow { Domain = item.Key, Emails = item.Select(x => x.Email).ToList() };
-        LstSelectedRows.Add(selectedRow);
-        List< BaseDaily> LstBaseDailies= db.BaseDailies.Where(x => x.Domain == item.Key).ToList();
-        foreach(BaseDaily baseDaily in LstBaseDailies)
+        foreach (string item in obj)
         {
-          baseDaily.other2 = "true";
-          db.Entry(baseDaily).State= EntityState.Modified;
-          db.Entry(baseDaily).Property(x => x.other2).IsModified = true;
-          
+          recipients = db.Recipients.Where(x => x.Domain == item).ToList();
+          LstRecipients.AddRange(recipients);
         }
-        
-      }
-      db.SaveChanges();
 
+        var query = LstRecipients.GroupBy(x => x.Domain);
+
+        foreach (var item in query)
+        {
+          //LstEmail = item.Select(x => x.Email).ToList();//.ToList<Recipient>();
+          selectedRow = new SelectedRow { Domain = item.Key, Emails = item.Select(x => x.Email).ToList() };
+          LstSelectedRows.Add(selectedRow);
+          List<BaseDaily> LstBaseDailies = db.BaseDailies.Where(x => x.Domain == item.Key).ToList();
+          foreach (BaseDaily baseDaily in LstBaseDailies)
+          {
+            baseDaily.other2 = "true";
+            db.Entry(baseDaily).State = EntityState.Modified;
+            db.Entry(baseDaily).Property(x => x.other2).IsModified = true;
+
+          }
+
+        }
+        db.SaveChanges();
+      }
       //foreach (Recipient recipient in recipients)
       //  {
       //    if (LstSelectedRows.FirstOrDefault(x => x.Domain == recipient.Domain) == null)
@@ -724,9 +727,21 @@ namespace LeaveON.Controllers
       {
         try
         {
+          string emailBodyText=string.Empty;
+          var emailLists = Request["emails"].ToString();
+          var emails = new List<string>();
+          if (!string.IsNullOrEmpty(emailLists) && emailLists != "[]")
+          {
+            emails = JsonConvert.DeserializeObject<List<string>>(emailLists);
+          }
+          else
+          {
+            return Json("No files selected.");
+          }
+
           HttpFileCollectionBase postedFiles = Request.Files;
           HttpPostedFileBase postedFile = postedFiles[0];
-          
+
           string filePath = string.Empty;
           if (postedFile != null)
           {
@@ -741,13 +756,27 @@ namespace LeaveON.Controllers
             postedFile.SaveAs(filePath);
 
             //Read the contents of CSV file.
-            string emailBodyText = System.IO.File.ReadAllText(filePath);
-            
-            }
-          //SendEmail.SendEmailUsingSMTP(, emailBodyText);
+            emailBodyText = System.IO.File.ReadAllText(filePath);
 
+          }
+          SendEmail.SendEmailUsingSMTP(emails, emailBodyText);
+          foreach(string email in emails)
+          {
+            string domainName = email.Split('@').ToList().Last();
+
+            List<BaseDaily> LstBaseDaily =db.BaseDailies.Where(x => x.Domain == domainName).ToList();
+            
+            foreach(BaseDaily baseDaily in LstBaseDaily)
+            {
+              baseDaily.other2 = null;
+              db.Entry(baseDaily).State = EntityState.Modified;
+              db.Entry(baseDaily).Property(x => x.other2).IsModified = true;
+            }
+          }
+          db.SaveChanges();
           //return PartialView("_DisplayAnnualLeaves", annualLeaves);
-          return View();
+          //return View();
+          return Json(new { success = true, responseText = "Your message successfuly sent!" }, JsonRequestBehavior.AllowGet);
           //
 
           //return PartialView("_DisplayAnnualLeaves");

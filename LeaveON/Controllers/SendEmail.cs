@@ -46,7 +46,7 @@ namespace LeaveON.Models
           mail.To.Add(new MailAddress(email));
         }
 
-        mail.Subject = "Please see this Email";
+        mail.Subject = "New [Lead magnet type]) [Lead magnet name]";
         mail.Body = Template;
         mail.IsBodyHtml = true;
         smtpServer.Send(mail);

@@ -136,13 +136,13 @@
               (2)
               <input class="btn btn-info" type="button" id="btnUpload" value="Send Email" />
               @*</div>*@
-
+              
               <div style="display:none" id="emailAlert" class="alert alert-success" role="alert">
-                Email(s) Sent
+                <label>Email(s) Sent</label> 
               </div>
 
               @*<br />*@
-
+              
             </div>
             <div id="NewData">
               @{ if (ViewBag.AnnualLeaves != null)
@@ -332,7 +332,10 @@
       }
 
       //$('select').change((e) => {
-        var selectedEmails = $("option:selected").map(function () { return this.value }).get();
+      //var selectedEmails = $("option:selected").map(function () { return this.value }).get();
+      var selectedEmails = $("option:selected").map(function () { return this.value }).get().slice(1);
+      fileData.append("emails", JSON.stringify(selectedEmails));
+
         //alert(selectedEmails);
         //console.log(selected);
       //});
@@ -351,6 +354,8 @@
           //alert(result);
           //alert('4');
           //$("#NewData").html(result);
+          //alert(result);
+          /*$("#emailAlert").text(result.responseText);*/
           $("#emailAlert").show();
         },
         error: function (err) {
