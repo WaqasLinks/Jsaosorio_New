@@ -129,6 +129,7 @@ namespace jsaosorio.Models
         public string Aux_Date_Month { get; set; }
         public string Aux_Date_Year { get; set; }
         public string UploadId { get; set; }
+        public bool IsHidden { get; set; }
     
         public virtual AspNetUser AspNetUser { get; set; }
         public virtual Upload Upload { get; set; }

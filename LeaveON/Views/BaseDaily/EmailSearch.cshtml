@@ -46,14 +46,14 @@
                   datechange
                 </th>
                 @*<th>
-                    other1
-                  </th>
-                  <th>
-                    other2
-                  </th>
-                  <th>
-                    other3
-                  </th>*@
+            other1
+          </th>
+          <th>
+            other2
+          </th>
+          <th>
+            other3
+          </th>*@
                 <th>
                   Traffic_Share
                 </th>
@@ -79,9 +79,16 @@
           <button id="ShowModal" type="button" class="btn btn-warning" data-toggle="modal" data-target="#myModal">
             Load Selected Domain's Email(s)
           </button>
+          <button id="LoadSelected" type="button" class="btn btn-info">
+            Open selected in New Page
+          </button>
+          <button id="DeleteSelected" type="button" class="btn btn-danger">
+            Delete Selected
+          </button>
+
           @*<button type="button" class="btn btn-primary btn-block btn-lg" data-toggle="modal" data-target="#myModal">
-              Open modal
-            </button>*@
+      Open modal
+    </button>*@
         </div>
       </div>
     </div>
@@ -136,13 +143,13 @@
               (2)
               <input class="btn btn-info" type="button" id="btnUpload" value="Send Email" />
               @*</div>*@
-              
+
               <div style="display:none" id="emailAlert" class="alert alert-success" role="alert">
-                <label>Email(s) Sent</label> 
+                <label>Email(s) Sent</label>
               </div>
 
               @*<br />*@
-              
+
             </div>
             <div id="NewData">
               @{ if (ViewBag.AnnualLeaves != null)
@@ -245,13 +252,43 @@
       }],
       select: {
         style: 'os',
-        selector: 'td:first-child'
+        selector: 'td:first-child',
+        style: 'multi'
       },
       order: [[1, 'asc']]
 
 
     });
+    $('#DeleteSelected').click(function () {
+      var myArr = [];
+      var selectedRows = table.rows('.selected').data().map(function (item) { return item.Domain; });
+      for (var i = 0; i < selectedRows.length; i++) {
+        myArr.push(selectedRows[i]);
+      }
+      $.ajax({
+        url: '/BaseDaily/DeleteSelected',
+        type: "POST",
+        data: { 'obj': myArr }
+      })
+        .done(function (data) {
+          // res containing list of domains and its emails
+          /*alert(res);*/
 
+          //var parsed_data = JSON.parse(res);
+          //alert(parsed_data);
+          //alert('s');
+          //alert(data);
+          //$("#NewData").html(data);
+
+          //$("#NewData").html(res);
+          //alert($("#NewData").html());
+          window.location.href = "/BaseDaily/EmailSearch/";
+
+        })
+        .fail(function (res) {
+          alert('Error');
+        })
+    });
     // CSHTML
     $('#ShowModal').click(function () {
       $("#emailAlert").hide();
@@ -285,7 +322,7 @@
 
     });
 
-    
+
 
 
     var table = $('#dnctable').DataTable();
@@ -315,8 +352,8 @@
 
   $('#btnUpload').click(function () {
 
-    
-    
+
+
     // Checking whether FormData is available in browser
     if (window.FormData !== undefined) {
 
@@ -336,8 +373,8 @@
       var selectedEmails = $("option:selected").map(function () { return this.value }).get().slice(1);
       fileData.append("emails", JSON.stringify(selectedEmails));
 
-        //alert(selectedEmails);
-        //console.log(selected);
+      //alert(selectedEmails);
+      //console.log(selected);
       //});
       // Adding one more key to FormData object
       //fileData.append('username', 'Manas');
@@ -354,9 +391,15 @@
           //alert(result);
           //alert('4');
           //$("#NewData").html(result);
-          //alert(result);
+          //alert(result.success);
           /*$("#emailAlert").text(result.responseText);*/
-          $("#emailAlert").show();
+          if (result.success == true) {
+            $("#emailAlert").show();
+          }
+          if (result.success == false && result.responseText == "No files selected.") {
+            alert("No files selected.");
+          }
+
         },
         error: function (err) {
           alert(err.statusText);

@@ -22,5 +22,7 @@ namespace jsaosorio.Models
         public string Position { get; set; }
         public string Department { get; set; }
         public string PhoneNumber { get; set; }
+        public Nullable<bool> IsDefault { get; set; }
+        public Nullable<bool> IsCustom { get; set; }
     }
 }

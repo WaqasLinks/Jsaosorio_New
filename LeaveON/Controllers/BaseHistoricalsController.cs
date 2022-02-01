@@ -24,7 +24,7 @@ namespace LeaveON.Controllers
       string LoggedInUserId = User.Identity.GetUserId();
       //List<BaseDaily> BaseDailyFilteredTable = TempData["BaseDailyFilteredTable"] as List<BaseDaily>;
       //List<BaseDaily> BaseDailyFilteredTable = ;
-      var dNCs = db.BaseDailies.Where(x => x.AspNetUserId == LoggedInUserId && (x.AdSense.Contains(DNCPhone) ||
+      var dNCs = db.BaseDailies.Where(x => x.IsHidden==false && x.AspNetUserId == LoggedInUserId && (x.AdSense.Contains(DNCPhone) ||
                                                                         x.Ages_18_24.Contains(DNCPhone) ||
                                                                         x.Ages_25_34.Contains(DNCPhone) ||
                                                                         x.Ages_35_44.Contains(DNCPhone) ||
@@ -120,6 +120,7 @@ namespace LeaveON.Controllers
       //return PartialView("_SearchDNC", await dNCs.ToListAsync());
 
       ViewBag.BaseDailyFilteredTable = await dNCs.ToListAsync();
+      ViewBag.Recipients = await db.Recipients.Where(x => x.Domain == domain).ToListAsync();
       return View(await db.BaseHistoricals.Where(x => x.Domain == domain).ToListAsync());
     }
 

@@ -42,23 +42,23 @@
                 @if (Model != null)
                 {
                   @*<div class="col-sm-12">
-                    Toggle column:
-                    <a href="#" class="toggle-vis" data-column="	0	">	Domain	</a> -
-                    <a href="#" class="toggle-vis" data-column="	1	">	deal	</a> -
-                    <a href="#" class="toggle-vis" data-column="	2	">	agent	</a> -
-                    <a href="#" class="toggle-vis" data-column="	3	">	Cor	</a> -
-                    <a href="#" class="toggle-vis" data-column="	4	">	Neg	</a> -
-                    <a href="#" class="toggle-vis" data-column="	5	">	date	</a> -
-                    <a href="#" class="toggle-vis" data-column="	6	">	type	</a> -
-                    <a href="#" class="toggle-vis" data-column="	7	">	datechange	</a> -
-                    <a href="#" class="toggle-vis" data-column="	8	">	other1	</a> -
-                    <a href="#" class="toggle-vis" data-column="	9	">	other2	</a> -
-                    <a href="#" class="toggle-vis" data-column="	10	">	other3	</a> -
-                    <a href="#" class="toggle-vis" data-column="	11	">	Traffic_Share	</a> -
-                    <a href="#" class="toggle-vis" data-column="	12	">	Change	</a> -
-                    <a href="#" class="toggle-vis" data-column="	13	">	Rank	</a> -
-                    <a href="#" class="toggle-vis" data-column="	14	">	Monthly_Visits	</a>
-                  </div>*@
+                      Toggle column:
+                      <a href="#" class="toggle-vis" data-column="	0	">	Domain	</a> -
+                      <a href="#" class="toggle-vis" data-column="	1	">	deal	</a> -
+                      <a href="#" class="toggle-vis" data-column="	2	">	agent	</a> -
+                      <a href="#" class="toggle-vis" data-column="	3	">	Cor	</a> -
+                      <a href="#" class="toggle-vis" data-column="	4	">	Neg	</a> -
+                      <a href="#" class="toggle-vis" data-column="	5	">	date	</a> -
+                      <a href="#" class="toggle-vis" data-column="	6	">	type	</a> -
+                      <a href="#" class="toggle-vis" data-column="	7	">	datechange	</a> -
+                      <a href="#" class="toggle-vis" data-column="	8	">	other1	</a> -
+                      <a href="#" class="toggle-vis" data-column="	9	">	other2	</a> -
+                      <a href="#" class="toggle-vis" data-column="	10	">	other3	</a> -
+                      <a href="#" class="toggle-vis" data-column="	11	">	Traffic_Share	</a> -
+                      <a href="#" class="toggle-vis" data-column="	12	">	Change	</a> -
+                      <a href="#" class="toggle-vis" data-column="	13	">	Rank	</a> -
+                      <a href="#" class="toggle-vis" data-column="	14	">	Monthly_Visits	</a>
+                    </div>*@
                 }
                 <table id="example1" class="table table-bordered table-hover dataTable dtr-inline display" style="width:100%" role="grid" aria-describedby="example1_info">
                   <thead>
@@ -412,348 +412,348 @@
 
                       foreach (var item in ViewBag.BaseDailyFilteredTable)
                       {
-                    <tr>
-                      <td>
-                        @item.Domain
-                        @*modelItem => item.Domain)*@
-                      </td>
-                      <td>
-                        @item.deal
-                      </td>
-                      <td>
-                        @item.agent
-                      </td>
-                      <td>
-                        @item.Cor
-                      </td>
-                      <td>
-                        @item.Neg
-                      </td>
-                      <td>
-                        @item.date
-                      </td>
-                      <td>
-                        @item.type
-                      </td>
-                      <td>
-                        @item.datechange
-                      </td>
-                      <td>
-                        @item.other1
-                      </td>
-                      <td>
-                        @item.other2
-                      </td>
-                      <td>
-                        @item.other3
-                      </td>
-                      <td>
-                        @item.Traffic_Share
-                      </td>
-                      <td>
-                        @item.Change
-                      </td>
-                      <td>
-                        @item.Rank
-                      </td>
-                      <td>
-                        @item.Monthly_Visits
-                      </td>
-                      <td>
-                        @item.Unique_Vistiors
-                      </td>
-                      <td>
-                        @item.Desktop_Share
-                      </td>
-                      <td>
-                        @item.Mobile_Share
-                      </td>
-                      <td>
-                        @item.Visit_Duration
-                      </td>
-                      <td>
-                        @item.Pages_Visit_1
-                      </td>
-                      <td>
-                        @item.Bounce_Rate
-                      </td>
-                      <td>
-                        @item.AdSense
-                      </td>
-                      <td>
-                        @item.Country
-                      </td>
-                      <td>
-                        @item.Top_country
-                      </td>
-                      <td>
-                        @item.Website_category
-                      </td>
-                      <td>
-                        @item.Website_type
-                      </td>
-                      <td>
-                        @item.MoM_traffic_change
-                      </td>
-                      <td>
-                        @item.YoY_traffic_change
-                      </td>
-                      <td>
-                        @item.MoM_Desktop_Traffic_Change
-                      </td>
-                      <td>
-                        @item.YoY_desktop_traffic_change
-                      </td>
-                      <td>
-                        @item.MoM_mobile_web_traffic_change
-                      </td>
-                      <td>
-                        @item.YoY_mobile_web_traffic_change
-                      </td>
-                      <td>
-                        @item.Unique_visits
-                      </td>
-                      <td>
-                        @item.MoM_unique_visitors_change
-                      </td>
-                      <td>
-                        @item.YoY_unique_visitors_change
-                      </td>
-                      <td>
-                        @item.MoM_desktop_unique_visitors_change
-                      </td>
-                      <td>
-                        @item.YoY_desktop_unique_visitors_change
-                      </td>
-                      <td>
-                        @item.MoM_mobile_web_unique_visitors_change
-                      </td>
-                      <td>
-                        @item.YoY_mobile_web_unique_visitors_change
-                      </td>
-                      <td>
-                        @item.Desktop_traffic_share
-                      </td>
-                      <td>
-                        @item.Mobile_traffic_share
-                      </td>
-                      <td>
-                        @item.Pages_Visit_2
-                      </td>
-                      <td>
-                        @item.Total_page_views
-                      </td>
-                      <td>
-                        @item.MoM_total_page_views_change
-                      </td>
-                      <td>
-                        @item.YoY_total_page_views_change
-                      </td>
-                      <td>
-                        @item.MoM_Desktop_page_views_change
-                      </td>
-                      <td>
-                        @item.YoY_desktop_page_views_change
-                      </td>
-                      <td>
-                        @item.MoM_mobile_web_page_views_change
-                      </td>
-                      <td>
-                        @item.YoY_mobile_web_page_views_change
-                      </td>
-                      <td>
-                        @item.Monthly_desktop_traffic
-                      </td>
-                      <td>
-                        @item.Desktop_unique_visitors
-                      </td>
-                      <td>
-                        @item.Desktop_visit_duration
-                      </td>
-                      <td>
-                        @item.Desktop_pages_per_visit
-                      </td>
-                      <td>
-                        @item.Desktop_total_page_views
-                      </td>
-                      <td>
-                        @item.Desktop_bounce_rate
-                      </td>
-                      <td>
-                        @item.Mobile_web_monthly_traffic
-                      </td>
-                      <td>
-                        @item.Mobile_web_unique_visitors
-                      </td>
-                      <td>
-                        @item.Mobile_web_visit_duration
-                      </td>
-                      <td>
-                        @item.Mobile_web_pages_visit
-                      </td>
-                      <td>
-                        @item.Mobile_web_total_page_views
-                      </td>
-                      <td>
-                        @item.Mobile_web_bounce_rate
-                      </td>
-                      <td>
-                        @item.Direct_traffic_share
-                      </td>
-                      <td>
-                        @item.Mail_share
-                      </td>
-                      <td>
-                        @item.Referrals_share
-                      </td>
-                      <td>
-                        @item.Social_share
-                      </td>
-                      <td>
-                        @item.Organic_search_share
-                      </td>
-                      <td>
-                        @item.Paid_search_share
-                      </td>
-                      <td>
-                        @item.Display_ads_traffic_share
-                      </td>
-                      <td>
-                        @item.Direct_traffic
-                      </td>
-                      <td>
-                        @item.MoM_direct_traffic_change
-                      </td>
-                      <td>
-                        @item.YoY_Direct_Traffic_Change
-                      </td>
-                      <td>
-                        @item.Mail_visits
-                      </td>
-                      <td>
-                        @item.MoM_mail_visits_change
-                      </td>
-                      <td>
-                        @item.YoY_mail_visits_change
-                      </td>
-                      <td>
-                        @item.Referral_visits
-                      </td>
-                      <td>
-                        @item.MoM_referrals_visits_change
-                      </td>
-                      <td>
-                        @item.YoY_referrals_visits_change
-                      </td>
-                      <td>
-                        @item.Social_visits
-                      </td>
-                      <td>
-                        @item.MoM_social_visits_change
-                      </td>
-                      <td>
-                        @item.YoY_social_visits_change
-                      </td>
-                      <td>
-                        @item.Organic_search_visits
-                      </td>
-                      <td>
-                        @item.MoM_organic_search_change
-                      </td>
-                      <td>
-                        @item.YoY_organic_search_change
-                      </td>
-                      <td>
-                        @item.Paid_search_visits
-                      </td>
-                      <td>
-                        @item.MoM_paid_search_change
-                      </td>
-                      <td>
-                        @item.YoY_paid_search_change
-                      </td>
-                      <td>
-                        @item.Display_ad_traffic
-                      </td>
-                      <td>
-                        @item.MoM_display_traffic_change
-                      </td>
-                      <td>
-                        @item.YoY_display_visits_change
-                      </td>
-                      <td>
-                        @item.Company_name
-                      </td>
-                      <td>
-                        @item.HQ_address
-                      </td>
-                      <td>
-                        @item.HQ_city
-                      </td>
-                      <td>
-                        @item.HQ_state
-                      </td>
-                      <td>
-                        @item.HQ_country
-                      </td>
-                      <td>
-                        @item.HQ_postal_code
-                      </td>
-                      <td>
-                        @item.Employees
-                      </td>
-                      <td>
-                        @item.Revenue
-                      </td>
-                      <td>
-                        @item.Phone_number
-                      </td>
-                      <td>
-                        @item.Email_address
-                      </td>
-                      <td>
-                        @item.Male_distribution
-                      </td>
-                      <td>
-                        @item.Female_distribution
-                      </td>
-                      <td>
-                        @item.Ages_18_24
-                      </td>
-                      <td>
-                        @item.Ages_25_34
-                      </td>
-                      <td>
-                        @item.Ages_35_44
-                      </td>
-                      <td>
-                        @item.Ages_45_54
-                      </td>
-                      <td>
-                        @item.Ages_55_64
-                      </td>
-                      <td>
-                        @item.Ages_65_Plus
-                      </td>
-                      <td>
-                        @item.aux_visit_duration
-                      </td>
-                      <td>
-                        @item.Aux_Neg
-                      </td>
-                      <td>
-                        @item.Aux_Date_Day
-                      </td>
-                      <td>
-                        @item.Aux_Date_Month
-                      </td>
-                      <td>
-                        @item.Aux_Date_Year
-                      </td>
-                      <td>
-                        @item.Upload.FileName
-                      </td>
-                    </tr>
+                        <tr>
+                          <td>
+                            @item.Domain
+                            @*modelItem => item.Domain)*@
+                          </td>
+                          <td>
+                            @item.deal
+                          </td>
+                          <td>
+                            @item.agent
+                          </td>
+                          <td>
+                            @item.Cor
+                          </td>
+                          <td>
+                            @item.Neg
+                          </td>
+                          <td>
+                            @item.date
+                          </td>
+                          <td>
+                            @item.type
+                          </td>
+                          <td>
+                            @item.datechange
+                          </td>
+                          <td>
+                            @item.other1
+                          </td>
+                          <td>
+                            @item.other2
+                          </td>
+                          <td>
+                            @item.other3
+                          </td>
+                          <td>
+                            @item.Traffic_Share
+                          </td>
+                          <td>
+                            @item.Change
+                          </td>
+                          <td>
+                            @item.Rank
+                          </td>
+                          <td>
+                            @item.Monthly_Visits
+                          </td>
+                          <td>
+                            @item.Unique_Vistiors
+                          </td>
+                          <td>
+                            @item.Desktop_Share
+                          </td>
+                          <td>
+                            @item.Mobile_Share
+                          </td>
+                          <td>
+                            @item.Visit_Duration
+                          </td>
+                          <td>
+                            @item.Pages_Visit_1
+                          </td>
+                          <td>
+                            @item.Bounce_Rate
+                          </td>
+                          <td>
+                            @item.AdSense
+                          </td>
+                          <td>
+                            @item.Country
+                          </td>
+                          <td>
+                            @item.Top_country
+                          </td>
+                          <td>
+                            @item.Website_category
+                          </td>
+                          <td>
+                            @item.Website_type
+                          </td>
+                          <td>
+                            @item.MoM_traffic_change
+                          </td>
+                          <td>
+                            @item.YoY_traffic_change
+                          </td>
+                          <td>
+                            @item.MoM_Desktop_Traffic_Change
+                          </td>
+                          <td>
+                            @item.YoY_desktop_traffic_change
+                          </td>
+                          <td>
+                            @item.MoM_mobile_web_traffic_change
+                          </td>
+                          <td>
+                            @item.YoY_mobile_web_traffic_change
+                          </td>
+                          <td>
+                            @item.Unique_visits
+                          </td>
+                          <td>
+                            @item.MoM_unique_visitors_change
+                          </td>
+                          <td>
+                            @item.YoY_unique_visitors_change
+                          </td>
+                          <td>
+                            @item.MoM_desktop_unique_visitors_change
+                          </td>
+                          <td>
+                            @item.YoY_desktop_unique_visitors_change
+                          </td>
+                          <td>
+                            @item.MoM_mobile_web_unique_visitors_change
+                          </td>
+                          <td>
+                            @item.YoY_mobile_web_unique_visitors_change
+                          </td>
+                          <td>
+                            @item.Desktop_traffic_share
+                          </td>
+                          <td>
+                            @item.Mobile_traffic_share
+                          </td>
+                          <td>
+                            @item.Pages_Visit_2
+                          </td>
+                          <td>
+                            @item.Total_page_views
+                          </td>
+                          <td>
+                            @item.MoM_total_page_views_change
+                          </td>
+                          <td>
+                            @item.YoY_total_page_views_change
+                          </td>
+                          <td>
+                            @item.MoM_Desktop_page_views_change
+                          </td>
+                          <td>
+                            @item.YoY_desktop_page_views_change
+                          </td>
+                          <td>
+                            @item.MoM_mobile_web_page_views_change
+                          </td>
+                          <td>
+                            @item.YoY_mobile_web_page_views_change
+                          </td>
+                          <td>
+                            @item.Monthly_desktop_traffic
+                          </td>
+                          <td>
+                            @item.Desktop_unique_visitors
+                          </td>
+                          <td>
+                            @item.Desktop_visit_duration
+                          </td>
+                          <td>
+                            @item.Desktop_pages_per_visit
+                          </td>
+                          <td>
+                            @item.Desktop_total_page_views
+                          </td>
+                          <td>
+                            @item.Desktop_bounce_rate
+                          </td>
+                          <td>
+                            @item.Mobile_web_monthly_traffic
+                          </td>
+                          <td>
+                            @item.Mobile_web_unique_visitors
+                          </td>
+                          <td>
+                            @item.Mobile_web_visit_duration
+                          </td>
+                          <td>
+                            @item.Mobile_web_pages_visit
+                          </td>
+                          <td>
+                            @item.Mobile_web_total_page_views
+                          </td>
+                          <td>
+                            @item.Mobile_web_bounce_rate
+                          </td>
+                          <td>
+                            @item.Direct_traffic_share
+                          </td>
+                          <td>
+                            @item.Mail_share
+                          </td>
+                          <td>
+                            @item.Referrals_share
+                          </td>
+                          <td>
+                            @item.Social_share
+                          </td>
+                          <td>
+                            @item.Organic_search_share
+                          </td>
+                          <td>
+                            @item.Paid_search_share
+                          </td>
+                          <td>
+                            @item.Display_ads_traffic_share
+                          </td>
+                          <td>
+                            @item.Direct_traffic
+                          </td>
+                          <td>
+                            @item.MoM_direct_traffic_change
+                          </td>
+                          <td>
+                            @item.YoY_Direct_Traffic_Change
+                          </td>
+                          <td>
+                            @item.Mail_visits
+                          </td>
+                          <td>
+                            @item.MoM_mail_visits_change
+                          </td>
+                          <td>
+                            @item.YoY_mail_visits_change
+                          </td>
+                          <td>
+                            @item.Referral_visits
+                          </td>
+                          <td>
+                            @item.MoM_referrals_visits_change
+                          </td>
+                          <td>
+                            @item.YoY_referrals_visits_change
+                          </td>
+                          <td>
+                            @item.Social_visits
+                          </td>
+                          <td>
+                            @item.MoM_social_visits_change
+                          </td>
+                          <td>
+                            @item.YoY_social_visits_change
+                          </td>
+                          <td>
+                            @item.Organic_search_visits
+                          </td>
+                          <td>
+                            @item.MoM_organic_search_change
+                          </td>
+                          <td>
+                            @item.YoY_organic_search_change
+                          </td>
+                          <td>
+                            @item.Paid_search_visits
+                          </td>
+                          <td>
+                            @item.MoM_paid_search_change
+                          </td>
+                          <td>
+                            @item.YoY_paid_search_change
+                          </td>
+                          <td>
+                            @item.Display_ad_traffic
+                          </td>
+                          <td>
+                            @item.MoM_display_traffic_change
+                          </td>
+                          <td>
+                            @item.YoY_display_visits_change
+                          </td>
+                          <td>
+                            @item.Company_name
+                          </td>
+                          <td>
+                            @item.HQ_address
+                          </td>
+                          <td>
+                            @item.HQ_city
+                          </td>
+                          <td>
+                            @item.HQ_state
+                          </td>
+                          <td>
+                            @item.HQ_country
+                          </td>
+                          <td>
+                            @item.HQ_postal_code
+                          </td>
+                          <td>
+                            @item.Employees
+                          </td>
+                          <td>
+                            @item.Revenue
+                          </td>
+                          <td>
+                            @item.Phone_number
+                          </td>
+                          <td>
+                            @item.Email_address
+                          </td>
+                          <td>
+                            @item.Male_distribution
+                          </td>
+                          <td>
+                            @item.Female_distribution
+                          </td>
+                          <td>
+                            @item.Ages_18_24
+                          </td>
+                          <td>
+                            @item.Ages_25_34
+                          </td>
+                          <td>
+                            @item.Ages_35_44
+                          </td>
+                          <td>
+                            @item.Ages_45_54
+                          </td>
+                          <td>
+                            @item.Ages_55_64
+                          </td>
+                          <td>
+                            @item.Ages_65_Plus
+                          </td>
+                          <td>
+                            @item.aux_visit_duration
+                          </td>
+                          <td>
+                            @item.Aux_Neg
+                          </td>
+                          <td>
+                            @item.Aux_Date_Day
+                          </td>
+                          <td>
+                            @item.Aux_Date_Month
+                          </td>
+                          <td>
+                            @item.Aux_Date_Year
+                          </td>
+                          <td>
+                            @item.Upload.FileName
+                          </td>
+                        </tr>
                       }
                     }
                   </tbody>
@@ -887,6 +887,117 @@
 
 </section>
 
+@* ---------------------------------------------------------------------------------------------------------------------------------------------- *@
+
+<section class="content">
+  <div class="row">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-header">
+          <h3 class="card-title">Recipients</h3>
+
+
+        </div>
+
+        <div class="card-body">
+
+          <div d="example2_wrapper" class="dataTables_wrapper dt-bootstrap4">
+            <div class="row">
+              <div class="col-sm-12 col-md-6">
+              </div>
+              <div class="col-sm-12 col-md-6"></div>
+            </div>
+            <div class="row">
+              <div class="col-sm-12">
+                <table id="example2" class="table table-bordered table-hover dataTable dtr-inline" role="grid" aria-describedby="example2_info">
+                  <thead>
+                    <tr role="row">
+                      <th>
+                        Domain
+                      </th>
+                      <th>
+                        Email
+                      </th>
+                      <th>
+                        FirstName
+                      </th>
+                      <th>
+                        LastName
+                      </th>
+                      <th>
+                        Position
+                      </th>
+                      <th>
+                        Department
+                      </th>
+                      <th>
+                        PhoneNumber
+                      </th>
+
+                    </tr>
+                  </thead>
+                  <tbody>
+                    @if (ViewBag.Recipients != null)
+                    {
+
+                      foreach (var item in ViewBag.Recipients)
+                      {
+                        <tr>
+                          <td>
+                            @item.Domain
+                          </td>
+                          <td>
+                            @item.Email
+                          </td>
+                          <td>
+                            @item.FirstName
+                          </td>
+                          <td>
+                            @item.LastName
+                          </td>
+                          <td>
+                            @item.Position
+                          </td>
+                          <td>
+                            @item.Department
+                          </td>
+                          <td>
+                            @item.PhoneNumber
+                          </td>
+
+                        
+                        </tr>
+                      }
+                    }
+                  </tbody>
+                  <tfoot>
+
+                    <tr>
+                    </tr>
+
+
+                  </tfoot>
+
+                </table>
+
+
+
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+</section>
+
+
+
+
+
 <!-- page script -->
 <script>
   $(document).ready(function () {
@@ -913,7 +1024,7 @@
       "autoWidth": false,
       "responsive": true,
     });
-    
+
     $('a.toggle-vis').on('click', function (e) {
       e.preventDefault();
 

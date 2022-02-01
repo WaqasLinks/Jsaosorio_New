@@ -184,6 +184,7 @@
           <Property Name="Aux_Date_Month" Type="nvarchar" MaxLength="500" />
           <Property Name="Aux_Date_Year" Type="nvarchar" MaxLength="500" />
           <Property Name="UploadId" Type="nvarchar" MaxLength="128" />
+          <Property Name="IsHidden" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="BaseHistorical">
           <Key>
@@ -210,6 +211,8 @@
           <Property Name="Position" Type="nvarchar" MaxLength="500" />
           <Property Name="Department" Type="nvarchar" MaxLength="500" />
           <Property Name="PhoneNumber" Type="nvarchar" MaxLength="500" />
+          <Property Name="IsDefault" Type="bit" />
+          <Property Name="IsCustom" Type="bit" />
         </EntityType>
         <EntityType Name="Upload">
           <Key>
@@ -493,6 +496,7 @@
           <NavigationProperty Name="AspNetUser" Relationship="Self.FK_BaseDaily_AspNetUsers" FromRole="BaseDaily" ToRole="AspNetUsers" />
           <Property Name="UploadId" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="Upload" Relationship="jsaosorioModel.FK_BaseDaily_Upload" FromRole="BaseDaily" ToRole="Upload" />
+          <Property Name="IsHidden" Type="Boolean" Nullable="false" />
         </EntityType>
         <Association Name="FK_BaseDaily_AspNetUsers">
           <End Role="AspNetUsers" Type="Self.AspNetUser" Multiplicity="0..1">
@@ -647,6 +651,8 @@
           <Property Name="Position" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
           <Property Name="Department" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
           <Property Name="PhoneNumber" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="IsDefault" Type="Boolean" />
+          <Property Name="IsCustom" Type="Boolean" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -684,6 +690,7 @@
           <EntitySetMapping Name="BaseDailies">
             <EntityTypeMapping TypeName="jsaosorioModel.BaseDaily">
               <MappingFragment StoreEntitySet="BaseDaily">
+                <ScalarProperty Name="IsHidden" ColumnName="IsHidden" />
                 <ScalarProperty Name="UploadId" ColumnName="UploadId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="AspNetUserId" ColumnName="AspNetUserId" />
@@ -863,6 +870,8 @@
           <EntitySetMapping Name="Recipients">
             <EntityTypeMapping TypeName="jsaosorioModel.Recipient">
               <MappingFragment StoreEntitySet="Recipient">
+                <ScalarProperty Name="IsCustom" ColumnName="IsCustom" />
+                <ScalarProperty Name="IsDefault" ColumnName="IsDefault" />
                 <ScalarProperty Name="PhoneNumber" ColumnName="PhoneNumber" />
                 <ScalarProperty Name="Department" ColumnName="Department" />
                 <ScalarProperty Name="Position" ColumnName="Position" />

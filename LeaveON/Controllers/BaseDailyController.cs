@@ -582,7 +582,7 @@ namespace LeaveON.Controllers
 
       List<BaseDaily> DNCList = new List<BaseDaily>();
       db.Configuration.ProxyCreationEnabled = false;
-      DNCList = db.BaseDailies.Include("Upload").ToList<BaseDaily>();
+      DNCList = db.BaseDailies.Where(x => x.IsHidden == false).Include("Upload").ToList<BaseDaily>();
 
       var result = new List<BaseDaily2>();
       for (int i = 0; i < DNCList.Count; i++)
@@ -672,8 +672,32 @@ namespace LeaveON.Controllers
       {
         foreach (string item in obj)
         {
-          recipients = db.Recipients.Where(x => x.Domain == item).ToList();
-          LstRecipients.AddRange(recipients);
+          recipients = db.Recipients.Where(x => x.Domain == item && x.IsCustom!=true).ToList();
+          if (recipients.Count() != 0)
+          {
+            LstRecipients.AddRange(recipients);
+          }
+          else
+          {
+            Recipient recipient= db.Recipients.FirstOrDefault(x => x.Domain == item && x.IsCustom == true);
+            if (recipient!=null)
+            {
+              selectedRow = new SelectedRow { Domain = item, IsCustom = true, DefaultEmail = recipient.Email };
+            }
+            else
+            {
+              selectedRow = new SelectedRow { Domain = item, IsCustom = true};
+            }
+            
+            LstSelectedRows.Add(selectedRow);
+          }
+        }
+
+        foreach (Recipient item in LstRecipients.ToList())
+        {
+
+          if (item.FirstName != null && item.LastName != null) item.Email += ", " + item.FirstName + " " + item.LastName;
+          db.Entry(item).State = EntityState.Detached;
         }
 
         var query = LstRecipients.GroupBy(x => x.Domain);
@@ -681,7 +705,12 @@ namespace LeaveON.Controllers
         foreach (var item in query)
         {
           //LstEmail = item.Select(x => x.Email).ToList();//.ToList<Recipient>();
-          selectedRow = new SelectedRow { Domain = item.Key, Emails = item.Select(x => x.Email).ToList() };
+          //Recipient recipient = (Recipient)item;
+          string DefaultValue = null;
+          Recipient recipient = item.FirstOrDefault(x => x.IsDefault == true);
+          if (recipient != null) DefaultValue = recipient.Email;
+
+           selectedRow = new SelectedRow { Domain = item.Key, Emails = item.Select(x => x.Email).ToList(),DefaultEmail= DefaultValue };
           LstSelectedRows.Add(selectedRow);
           List<BaseDaily> LstBaseDailies = db.BaseDailies.Where(x => x.Domain == item.Key).ToList();
           foreach (BaseDaily baseDaily in LstBaseDailies)
@@ -713,6 +742,52 @@ namespace LeaveON.Controllers
       //return Json(result, JsonRequestBehavior.AllowGet);
       return PartialView("_EmailSearch", LstSelectedRows);
     }
+    public ActionResult DeleteSelected(List<string> obj)
+    //public ActionResult UploadAndSend(List<MyList> fileData, List<MyList> selectedEmails)
+    {
+      if (obj != null)
+      {
+        foreach (string item in obj)
+        {
+          List<BaseDaily> LstBaseDaily = db.BaseDailies.Where(x => x.Domain == item).ToList();
+          foreach (BaseDaily baseDaily in LstBaseDaily)
+          {
+            baseDaily.IsHidden = true;
+            db.Entry(baseDaily).State = EntityState.Modified;
+            db.Entry(baseDaily).Property(x => x.IsHidden).IsModified = true;
+          }
+
+        }
+        db.SaveChanges();
+      }
+
+      //return RedirectToAction("EmailSearch");
+      return Json(new { success = false, responseText = "Success" }, JsonRequestBehavior.AllowGet);
+    }
+
+    public ActionResult SetDefault(string domain, string email)
+    {
+      List<Recipient> LstRecipient = db.Recipients.Where(x => x.Domain == domain).ToList();
+
+      if (LstRecipient != null)
+      {
+        Recipient recipient = db.Recipients.FirstOrDefault(x => x.Email == email);
+
+        recipient.IsDefault = true;
+        db.Entry(recipient).State = EntityState.Modified;
+        db.Entry(recipient).Property(x => x.IsDefault).IsModified = true;
+      }
+      else
+      {//create new
+        Recipient recipient = new Recipient { Id = Guid.NewGuid().ToString(), Domain = domain, Email = email, IsDefault = true, IsCustom = true };
+        db.Recipients.Add(recipient);
+
+      }
+      db.SaveChanges();
+
+      //return RedirectToAction("EmailSearch");
+      return Json(new { success = false, responseText = "Success" }, JsonRequestBehavior.AllowGet);
+    }
     public class MyList
     {
       public int Id { get; set; }
@@ -727,12 +802,17 @@ namespace LeaveON.Controllers
       {
         try
         {
-          string emailBodyText=string.Empty;
+          string emailBodyText = string.Empty;
           var emailLists = Request["emails"].ToString();
-          var emails = new List<string>();
+          var LstemailsWithName = new List<string>();
+          var Lstemails = new List<string>();
           if (!string.IsNullOrEmpty(emailLists) && emailLists != "[]")
           {
-            emails = JsonConvert.DeserializeObject<List<string>>(emailLists);
+            LstemailsWithName = JsonConvert.DeserializeObject<List<string>>(emailLists);
+            foreach (string email in LstemailsWithName)
+            {
+              Lstemails.Add(email.Split(',').FirstOrDefault());
+            }
           }
           else
           {
@@ -759,14 +839,14 @@ namespace LeaveON.Controllers
             emailBodyText = System.IO.File.ReadAllText(filePath);
 
           }
-          SendEmail.SendEmailUsingSMTP(emails, emailBodyText);
-          foreach(string email in emails)
+          SendEmail.SendEmailUsingSMTP(Lstemails, emailBodyText);
+          foreach (string email in Lstemails)
           {
             string domainName = email.Split('@').ToList().Last();
 
-            List<BaseDaily> LstBaseDaily =db.BaseDailies.Where(x => x.Domain == domainName).ToList();
-            
-            foreach(BaseDaily baseDaily in LstBaseDaily)
+            List<BaseDaily> LstBaseDaily = db.BaseDailies.Where(x => x.Domain == domainName).ToList();
+
+            foreach (BaseDaily baseDaily in LstBaseDaily)
             {
               baseDaily.other2 = null;
               db.Entry(baseDaily).State = EntityState.Modified;
@@ -788,7 +868,8 @@ namespace LeaveON.Controllers
       }
       else
       {
-        return Json("No files selected.");
+        //return Json("No files selected.");
+        return Json(new { success = false, responseText = "No files selected." }, JsonRequestBehavior.AllowGet);
       }
     }
 

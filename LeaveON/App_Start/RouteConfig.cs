@@ -16,7 +16,7 @@ namespace LeaveON
       routes.MapRoute(
           name: "Default",
           url: "{controller}/{action}/{id}",
-          defaults: new { controller = "BaseDaily", action = "DNCSearch", id = UrlParameter.Optional }
+          defaults: new { controller = "BaseDaily", action = "EmailSearch", id = UrlParameter.Optional }
       );
       //routes.MapRoute(
       //    name: "Default",

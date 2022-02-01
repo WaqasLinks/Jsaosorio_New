@@ -22,6 +22,9 @@
             @*@Html.DisplayNameFor(model => model.Email)*@
             Email
           </th>
+          <th>
+
+          </th>
 
         </tr>
       </thead>
@@ -31,21 +34,33 @@
 
           foreach (var item in Model)
           {
-        <tr>
+            <tr>
 
-          <td>
-            @Html.DisplayFor(modelItem => item.Domain)
-          </td>
+              <td>
+                @Html.DisplayFor(modelItem => item.Domain)
+              </td>
 
-          <td>
+              <td>
+              </td>
 
-          </td>
+              <td>
+                @{
+                  if (item.Emails != null)
+                  {
+                    @Html.DropDownListFor(modelItem => item.Emails, new SelectList(item.Emails, item.DefaultEmail), null, new { @class = "form-control" })
+                  }
+                  else
+                  {
+                    @*@Html.Editor("DefaultEmail", new { htmlAttributes = new { @class = "form-control" } })*@
+                    @Html.EditorFor(modelItem => item.DefaultEmail, new { htmlAttributes = new { @class = "form-control" } })
+                   } }
 
-          <td>
-            @Html.DropDownListFor(modelItem => item.Emails, new SelectList(item.Emails), null, new { @class = "form-control" })
-          </td>
+              </td>
+              <td>
+                <input class="btn btn-warning" type="button" id="btnSetDefault" value="Set Default" />
+              </td>
 
-        </tr>
+            </tr>
           }
         }
       </tbody>
