@@ -32,6 +32,7 @@ namespace LeaveON.Models
       //smtpServer.UseDefaultCredentials = false;
 
       smtpServer.Credentials = new System.Net.NetworkCredential(Constants.LeavON_Email, Constants.LeavON_Password);
+      
       //smtpServer.Host = "smtp.gmail.com"; not neccesry now. as mention above
       smtpServer.Port = 587; // Gmail works on this port
       smtpServer.EnableSsl = true;
@@ -40,13 +41,14 @@ namespace LeaveON.Models
       {
 
         mail.From = new MailAddress(Constants.LeavON_Email);
+        //mail.From = new MailAddress("mail9081@gmail.com");
         //mail.From = new MailAddress(sender.Email);
         foreach (String email in RecipientsEmails)
         {
           mail.To.Add(new MailAddress(email));
         }
 
-        mail.Subject = "New [Lead magnet type]) [Lead magnet name]";
+        //mail.Subject = "New [Lead magnet type]) [Lead magnet name]";
         mail.Body = Template;
         mail.IsBodyHtml = true;
         smtpServer.Send(mail);

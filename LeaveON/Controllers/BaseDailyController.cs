@@ -765,22 +765,56 @@ namespace LeaveON.Controllers
       return Json(new { success = false, responseText = "Success" }, JsonRequestBehavior.AllowGet);
     }
 
+    [HttpPost]
     public ActionResult SetDefault(string domain, string email)
     {
       List<Recipient> LstRecipient = db.Recipients.Where(x => x.Domain == domain).ToList();
-
-      if (LstRecipient != null)
+      Recipient recipient;
+      if (LstRecipient != null && LstRecipient.Count > 0 && LstRecipient[0].IsCustom!=true)
       {
-        Recipient recipient = db.Recipients.FirstOrDefault(x => x.Email == email);
 
-        recipient.IsDefault = true;
-        db.Entry(recipient).State = EntityState.Modified;
-        db.Entry(recipient).Property(x => x.IsDefault).IsModified = true;
+        // Marking IsDefault 0 to all emails that has same domain
+        for (int i = 0; i < LstRecipient.Count; i++)
+        {
+          LstRecipient[i].IsDefault = false;
+          db.Entry(LstRecipient[i]).State = EntityState.Modified;
+          //db.SaveChanges();
+        }
+
+        email = email.Split(',').FirstOrDefault();
+        recipient = db.Recipients.FirstOrDefault(x => x.Email == email);
+        if (recipient != null)
+        {
+          recipient.IsDefault = true;
+          db.Entry(recipient).State = EntityState.Modified;
+          db.Entry(recipient).Property(x => x.IsDefault).IsModified = true;
+        }
+        else
+        {//create new
+          recipient = new Recipient { Id = Guid.NewGuid().ToString(), Domain = domain, Email = email, IsDefault = true, IsCustom = true };
+          db.Recipients.Add(recipient);
+
+        }
+
       }
       else
       {//create new
-        Recipient recipient = new Recipient { Id = Guid.NewGuid().ToString(), Domain = domain, Email = email, IsDefault = true, IsCustom = true };
-        db.Recipients.Add(recipient);
+        email = email.Split(',').FirstOrDefault();
+        recipient = db.Recipients.FirstOrDefault(x => x.IsCustom==true && ( x.Email == email || x.Domain==domain) );
+        if (recipient != null)
+        {
+          recipient.IsDefault = true;
+          recipient.Email = email;
+          db.Entry(recipient).State = EntityState.Modified;
+          db.Entry(recipient).Property(x => x.IsDefault).IsModified = true;
+        }
+        else
+        {//create new
+          recipient = new Recipient { Id = Guid.NewGuid().ToString(), Domain = domain, Email = email, IsDefault = true, IsCustom = true };
+          db.Recipients.Add(recipient);
+
+        }
+
 
       }
       db.SaveChanges();

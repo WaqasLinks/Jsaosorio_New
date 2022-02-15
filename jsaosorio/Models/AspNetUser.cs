@@ -44,6 +44,9 @@ namespace jsaosorio.Models
         public Nullable<int> UserLeavePolicyId { get; set; }
         public Nullable<int> CountryId { get; set; }
         public Nullable<bool> IsActive { get; set; }
+        public string SmtpClient { get; set; }
+        public string SmtpPassword { get; set; }
+        public Nullable<int> SmtpPort { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<BaseDaily> BaseDailies { get; set; }

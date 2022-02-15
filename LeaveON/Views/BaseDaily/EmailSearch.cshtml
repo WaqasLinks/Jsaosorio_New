@@ -46,14 +46,14 @@
                   datechange
                 </th>
                 @*<th>
-            other1
-          </th>
-          <th>
-            other2
-          </th>
-          <th>
-            other3
-          </th>*@
+                    other1
+                  </th>
+                  <th>
+                    other2
+                  </th>
+                  <th>
+                    other3
+                  </th>*@
                 <th>
                   Traffic_Share
                 </th>
@@ -87,8 +87,8 @@
           </button>
 
           @*<button type="button" class="btn btn-primary btn-block btn-lg" data-toggle="modal" data-target="#myModal">
-      Open modal
-    </button>*@
+              Open modal
+            </button>*@
         </div>
       </div>
     </div>
@@ -203,6 +203,16 @@
 
 <script>
   $(document).ready(function () {
+
+
+    $("#LoadSelected").click(function () {
+      var selectedRows = table.rows('.selected').data().map(function (item) { return item.Domain; });
+      for (var i = 0; i < selectedRows.length; i++) {
+        /*window.open(window.location.href + 'BaseHistoricals/Index?domain=' + selectedRows[i], '_blank');*/
+        window.open('http://' + selectedRows[i], '_blank');
+      }
+    });
+
     $("#dnctable").DataTable({
       "ajax": {
         "url": "/BaseDaily/GetEmailsList",

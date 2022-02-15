@@ -49,8 +49,27 @@
       @Html.DropDownList("UserType", (IEnumerable<SelectListItem>)ViewBag.UserTypesWithSelected, htmlAttributes: new { @class = "form-control" })
 
     </div>
+
+    <div class="form-group">
+      @Html.LabelFor(model => model.SmtpClient, "Smtp Client", htmlAttributes: new { @class = " " })
+
+      @Html.EditorFor(model => model.SmtpClient, new { htmlAttributes = new { @class = "form-control" } })
+      @Html.ValidationMessageFor(model => model.SmtpClient, "", new { @class = "text-danger" })
+
+    </div>
+
+    <div class="form-group">
+      @Html.LabelFor(model => model.SmtpPort, "Port", htmlAttributes: new { @class = " " })
+
+      @Html.EditorFor(model => model.SmtpPort, new { htmlAttributes = new { @class = "form-control"} })
+      @Html.ValidationMessageFor(model => model.SmtpPort, "", new { @class = "text-danger" })
+
+    </div>
+
+
+
     @Html.ActionLink("Reset Pasword", "ResetPassword", new { code = Model.Id })
-    
+
     @*<div class="form-group">
       @Html.Label("Password", htmlAttributes: new { @class = " " })
       @Html.Password("Password", (string)ViewBag.Password, htmlAttributes: new { @class = "form-control" })

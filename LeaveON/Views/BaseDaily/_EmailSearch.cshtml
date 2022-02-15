@@ -57,7 +57,7 @@
 
               </td>
               <td>
-                <input class="btn btn-warning" type="button" id="btnSetDefault" value="Set Default" />
+                <input class="btn btn-warning btnSetDefault" type="button" value="Set Default" />
               </td>
 
             </tr>
@@ -87,6 +87,29 @@
 <script type="text/javascript">
 
   $(document).ready(function () {
+
+    $(".btnSetDefault").click(function () {
+      var domain = $(this).parent().parent().find('td:eq(0)').text().trim();
+      var email = $(this).parent().parent().find('select').val();
+      if (email == null) email = $(this).parent().parent().find('input').val();
+      var data = {
+        'domain': domain,
+        'email': email
+      }
+      $.ajax({
+        url: '/BaseDaily/SetDefault',
+        type: "POST",
+        data: data
+      })
+        .done(function (data) {
+
+          alert('Action Has Been Done Successfully.')
+
+        })
+        .fail(function (res) {
+          console.log('Something Went Wrong.')
+        })
+    });
 
     $('#example').DataTable({
       columnDefs: [{

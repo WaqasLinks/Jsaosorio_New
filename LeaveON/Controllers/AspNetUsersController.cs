@@ -115,7 +115,7 @@ namespace LeaveON.Controllers
     }
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<ActionResult> Edit(string UserType, [Bind(Include = "Id,Hometown,Email,EmailConfirmed,PasswordHash,SecurityStamp,PhoneNumber,PhoneNumberConfirmed,TwoFactorEnabled,LockoutEndDateUtc,LockoutEnabled,AccessFailedCount,UserName,DateCreated,DateModified,Remarks,DepartmentId,CountryId,UserLeavePolicyId,BioStarEmpNum")] AspNetUser aspNetUser)//,int CountryId)
+    public async Task<ActionResult> Edit(string UserType, [Bind(Include = "Id,Hometown,Email,EmailConfirmed,PasswordHash,SecurityStamp,PhoneNumber,PhoneNumberConfirmed,TwoFactorEnabled,LockoutEndDateUtc,LockoutEnabled,AccessFailedCount,UserName,DateCreated,DateModified,Remarks,DepartmentId,CountryId,UserLeavePolicyId,BioStarEmpNum,SmtpClient,SmtpPort,SmtpPassword")] AspNetUser aspNetUser)//,int CountryId)
     {
       aspNetUser.DateModified = DateTime.Now;
 
@@ -131,6 +131,10 @@ namespace LeaveON.Controllers
         db.Entry(aspNetUser).Property(x => x.CountryId).IsModified = false;
         db.Entry(aspNetUser).Property(x => x.UserLeavePolicyId).IsModified = false;
         db.Entry(aspNetUser).Property(x => x.BioStarEmpNum).IsModified = false;
+
+        db.Entry(aspNetUser).Property(x => x.SmtpClient).IsModified = true;
+        db.Entry(aspNetUser).Property(x => x.SmtpPassword).IsModified = true;
+        db.Entry(aspNetUser).Property(x => x.SmtpPort).IsModified = true;
 
         await db.SaveChangesAsync();
 

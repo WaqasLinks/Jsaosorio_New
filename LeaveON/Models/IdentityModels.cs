@@ -18,7 +18,10 @@ namespace LeaveON.Models
         public int? BioStarEmpNum { get; set; }
         public int?  UserLeavePolicyId { get; set; }
         public bool? IsActive { get; set; }
-
+        public string SmtpClient { get; set; }
+        public string SmtpPassword { get; set; }
+        public int? SmtpPort { get; set; }
+    
     public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<ApplicationUser> manager)
         {
             // Note the authenticationType must match the one defined in CookieAuthenticationOptions.AuthenticationType

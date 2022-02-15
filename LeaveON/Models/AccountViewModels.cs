@@ -104,6 +104,16 @@ namespace LeaveON.Models
     [Display(Name = "Leave Policy")]
     public int UserLeavePolicyId { get; set; }
 
+    [Display(Name = "SMTP Client")]
+    public string SmtpClient { get; set; }
+    public string SmtpPassword { get; set; }
+    
+    [Display(Name = "Port")]
+    public int? SmtpPort { get; set; }
+
+
+
+
   }
   public class UpdateUserViewModel
   {
@@ -129,9 +139,16 @@ namespace LeaveON.Models
     [Display(Name = "Leave Policy")]
     public int UserLeavePolicyId { get; set; }
 
+    [Display(Name = "SMTP Client")]
+    public string SmtpClient { get; set; }
+    public string SmtpPassword { get; set; }
+
+    [Display(Name = "Port")]
+    public int? SmtpPort { get; set; }
+
   }
 
- 
+
   public class ResetPasswordViewModel
   {
     [Required]

@@ -64,6 +64,9 @@
           <Property Name="UserLeavePolicyId" Type="int" />
           <Property Name="CountryId" Type="int" />
           <Property Name="IsActive" Type="bit" />
+          <Property Name="SmtpClient" Type="nvarchar(max)" />
+          <Property Name="SmtpPassword" Type="nvarchar(max)" />
+          <Property Name="SmtpPort" Type="int" />
         </EntityType>
         <EntityType Name="BaseDaily">
           <Key>
@@ -374,6 +377,9 @@
           <NavigationProperty Name="AspNetUserClaims" Relationship="jsaosorioModel.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" FromRole="AspNetUser" ToRole="AspNetUserClaim" />
           <NavigationProperty Name="AspNetUserLogins" Relationship="jsaosorioModel.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" FromRole="AspNetUser" ToRole="AspNetUserLogin" />
           <NavigationProperty Name="AspNetRoles" Relationship="jsaosorioModel.AspNetUserRoles" FromRole="AspNetUser" ToRole="AspNetRole" />
+          <Property Name="SmtpClient" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="SmtpPassword" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="SmtpPort" Type="Int32" />
         </EntityType>
         <EntityType Name="BaseDaily">
           <Key>
@@ -663,6 +669,9 @@
           <EntitySetMapping Name="AspNetUsers">
             <EntityTypeMapping TypeName="jsaosorioModel.AspNetUser">
               <MappingFragment StoreEntitySet="AspNetUsers">
+                <ScalarProperty Name="SmtpPort" ColumnName="SmtpPort" />
+                <ScalarProperty Name="SmtpPassword" ColumnName="SmtpPassword" />
+                <ScalarProperty Name="SmtpClient" ColumnName="SmtpClient" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="BioStarEmpNum" ColumnName="BioStarEmpNum" />
                 <ScalarProperty Name="Hometown" ColumnName="Hometown" />
